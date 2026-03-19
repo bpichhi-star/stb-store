@@ -143,7 +143,11 @@ export default function STBStore() {
           <div className="hero__veil" />
           <div className="hero__center">
             <p className="hero__season">New Season &nbsp;·&nbsp; SS 2025</p>
-            <img src={logoImg} className="hero__logo-img" alt="Strictly Thee Best" />
+            <h1 className="hero__wordmark">
+              <span className="hero__wm-strictly">Strictly</span>
+              <span className="hero__wm-thee">Thee</span>
+              <span className="hero__wm-best">Best</span>
+            </h1>
             <div className="hero__divider-row">
               <span className="hero__line" />
               <p className="hero__for-all">For All</p>
@@ -340,7 +344,10 @@ html { scroll-behavior: smooth; }
 .hero__center { position: relative; text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 0; animation: heroReveal 1.4s cubic-bezier(.16,1,.3,1) .1s both; margin-right: 6vw; }
 @keyframes heroReveal { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
 .hero__season { font-size: 10px; font-weight: 600; letter-spacing: .6em; text-transform: uppercase; color: var(--gold); margin-bottom: 28px; }
-.hero__logo-img { width: clamp(220px, 32vw, 440px); height: auto; object-fit: contain; margin-bottom: 36px; mix-blend-mode: screen; animation: heroReveal 1.4s cubic-bezier(.16,1,.3,1) .35s both; }
+.hero__wordmark { display: flex; flex-direction: column; align-items: flex-end; line-height: .88; margin-bottom: 32px; }
+.hero__wm-strictly { font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 300; font-size: clamp(56px, 10vw, 140px); color: var(--cream); letter-spacing: .03em; display: block; animation: heroReveal 1.4s cubic-bezier(.16,1,.3,1) .35s both; }
+.hero__wm-thee { font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: clamp(30px, 5.5vw, 76px); color: var(--gold); letter-spacing: .55em; text-transform: uppercase; display: block; margin-top: -6px; animation: heroReveal 1.4s cubic-bezier(.16,1,.3,1) .45s both; }
+.hero__wm-best { font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: clamp(56px, 10vw, 140px); color: var(--cream); letter-spacing: .08em; text-transform: uppercase; display: block; margin-top: -4px; animation: heroReveal 1.4s cubic-bezier(.16,1,.3,1) .55s both; }
 .hero__divider-row { display: flex; align-items: center; gap: 20px; width: 100%; max-width: 400px; margin-bottom: 44px; }
 .hero__line { flex: 1; height: 1px; background: rgba(242,237,229,.25); }
 .hero__for-all { font-size: 11px; font-weight: 600; letter-spacing: .75em; text-transform: uppercase; color: rgba(242,237,229,.6); white-space: nowrap; }
