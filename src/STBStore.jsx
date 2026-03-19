@@ -101,7 +101,12 @@ async function shopifyFetch(query, variables = {}) {
   return json.data
 }
 
-const COLLECTIONS = ['ALL', 'STB', 'NYC', 'LA']
+const COLLECTIONS = [
+  { value: 'ALL', label: 'All Collection' },
+  { value: 'STB', label: 'STB Collection' },
+  { value: 'NYC', label: 'NYC Collection' },
+  { value: 'LA', label: 'LA Collection' },
+]
 
 const css = `
   @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap');
@@ -772,7 +777,7 @@ export default function STBStore() {
         {/* Hero */}
         <section className="stb-hero">
           <h1 className="stb-hero-title">STB</h1>
-          <p className="stb-hero-sub">Strictly Thee Best — Premium Apparel</p>
+          <p className="stb-hero-sub">Strictly Thee Best â Premium Apparel</p>
         </section>
 
         {/* Filters */}
@@ -780,10 +785,10 @@ export default function STBStore() {
           {COLLECTIONS.map(col => (
             <button
               key={col}
-              className={`stb-filter-btn ${activeCollection === col ? 'active' : ''}`}
-              onClick={() => setActiveCollection(col)}
+              className={`stb-filter-btn ${activeCollection === col.value ? 'active' : ''}`}
+              onClick={() => setActiveCollection(col.value)}
             >
-              {col}
+              {col.label}
             </button>
           ))}
         </nav>
@@ -831,7 +836,7 @@ export default function STBStore() {
                         <div className="stb-card-tag">{tag} Collection</div>
                       </div>
                       <div className="stb-card-price">
-                        {price ? formatPrice(price.amount, price.currencyCode) : '$—'}
+                        {price ? formatPrice(price.amount, price.currencyCode) : '$â'}
                       </div>
                     </div>
                   </div>
@@ -857,11 +862,11 @@ export default function STBStore() {
                       : <div className="stb-modal-img-placeholder">{tag || 'STB'}</div>
                     }
                     <div className="stb-modal-info">
-                      <button className="stb-modal-close" onClick={() => setSelectedProduct(null)}>×</button>
+                      <button className="stb-modal-close" onClick={() => setSelectedProduct(null)}>Ã</button>
                       <div className="stb-modal-tag">{tag} Collection</div>
                       <div className="stb-modal-title">{selectedProduct.title}</div>
                       <div className="stb-modal-price">
-                        {price ? formatPrice(price.amount, price.currencyCode) : '$—'}
+                        {price ? formatPrice(price.amount, price.currencyCode) : '$â'}
                       </div>
                       <div className="stb-size-label">Select Size</div>
                       <div className="stb-sizes">
@@ -898,7 +903,7 @@ export default function STBStore() {
         <div className={`stb-cart-drawer ${cartOpen ? 'open' : ''}`}>
           <div className="stb-cart-header">
             <div className="stb-cart-title">Your Cart</div>
-            <button className="stb-cart-close" onClick={() => setCartOpen(false)}>×</button>
+            <button className="stb-cart-close" onClick={() => setCartOpen(false)}>Ã</button>
           </div>
           <div className="stb-cart-items">
             {cartCount === 0 ? (
@@ -908,7 +913,7 @@ export default function STBStore() {
                 <div key={node.id} className="stb-cart-item">
                   <div>
                     <div className="stb-cart-item-name">{node.merchandise.product.title}</div>
-                    <div className="stb-cart-item-variant">{node.merchandise.title} · Qty {node.quantity}</div>
+                    <div className="stb-cart-item-variant">{node.merchandise.title} Â· Qty {node.quantity}</div>
                     <div className="stb-cart-item-price">
                       {formatPrice(node.merchandise.price.amount, node.merchandise.price.currencyCode)}
                     </div>
@@ -922,7 +927,7 @@ export default function STBStore() {
               <div className="stb-cart-total">
                 <span className="stb-cart-total-label">Total</span>
                 <span className="stb-cart-total-amount">
-                  {cartTotal ? formatPrice(cartTotal.amount, cartTotal.currencyCode) : '—'}
+                  {cartTotal ? formatPrice(cartTotal.amount, cartTotal.currencyCode) : 'â'}
                 </span>
               </div>
               <button
