@@ -137,23 +137,23 @@ export default function STBStore() {
           </ul>
         </nav>
 
-         # {/* ── HERO ── */}
-         # <section className="hero">
-          #  <img className="hero__img" src={HERO_IMG} alt="STB Editorial" />
-           # <div className="hero__veil" />
-           # <div className="hero__center">
-            #  <img src={logoImg} className="hero__logo-img" alt="STB" />
-             # <div className="hero__divider-row">
-              #  <span className="hero__line" />
-               # <p className="hero__for-all">For All</p>
-              #  <span className="hero__line" />
-            #  </div>
-             # <button className="hero__cta" onClick={() => scrollTo("collections")}>
-              #  Explore the Collection
-            #  </button>
-          #  </div>
-          #  <div className="hero__scroll-hint" aria-hidden="true"><span /></div>
-        #  </section>
+          {/* ── HERO ── */}
+          <section className="hero">
+            <img className="hero__img" src={HERO_IMG} alt="STB Editorial" />
+            <div className="hero__veil" />
+            <div className="hero__center">
+             <img src={logoImg} className="hero__logo-img" alt="STB" />
+              <div className="hero__divider-row">
+                <span className="hero__line" />
+                <p className="hero__for-all">For All</p>
+               <span className="hero__line" />
+             </div>
+              <button className="hero__cta" onClick={() => scrollTo("collections")}>
+               Explore the Collection
+             </button>
+            </div>
+           <div className="hero__scroll-hint" aria-hidden="true"><span /></div>
+          </section>
 
         {/* ── MANIFESTO ── */}
         <section className="manifesto">
