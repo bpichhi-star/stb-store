@@ -154,7 +154,7 @@ body { background: var(--black); color: var(--white); font-family: 'DM Sans', sa
 }
 `;
 
-const LOGO = "/logo.png";
+const LOGO = "https://raw.githubusercontent.com/bpichhi-star/stb-store/main/logo.png";
 
 const COLLECTIONS = ["ALL", "STB", "NYC", "LA"];
 
