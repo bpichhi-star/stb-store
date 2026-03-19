@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import heroPhoto from "./Landing.png";
 import logoImg from "./logo.png";
 
-// ─── Shopify Config ─────────────────────────────────────────────────────────
+// âââ Shopify Config âââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 const DOMAIN = "stb-4219.myshopify.com";
 const TOKEN = "a64dd51a0b0ac5b428d9cb11c55de8cf";
 
@@ -40,7 +40,7 @@ async function shopify(query) {
   return json.data;
 }
 
-// ─── Assets ──────────────────────────────────────────────────────────────────
+// âââ Assets ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 const HERO_IMG = heroPhoto;
 const COLLECTIONS = [
   { id: "NYC", label: "NYC Collection", sub: "Streets Never Sleep", img: "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=900&q=85" },
@@ -48,10 +48,10 @@ const COLLECTIONS = [
   { id: "LA", label: "LA Collection", sub: "Golden State of Mind", img: "https://images.unsplash.com/photo-1580655653885-65763b2597d0?w=900&q=85" },
 ];
 
-// ─── Utilities ───────────────────────────────────────────────────────────────
+// âââ Utilities âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 const fmtPrice = (p) => new Intl.NumberFormat("en-US", { style: "currency", currency: p.priceRange.minVariantPrice.currencyCode }).format(parseFloat(p.priceRange.minVariantPrice.amount));
 
-// ─── Component ───────────────────────────────────────────────────────────────
+// âââ Component âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 export default function STBStore() {
   const [products, setProducts] = useState([]);
   const [loadingProducts, setLoadingProducts] = useState(true);
@@ -61,6 +61,8 @@ export default function STBStore() {
   const [modal, setModal] = useState(null);
   const [variant, setVariant] = useState(null);
   const [adding, setAdding] = useState(false);
+  const [accountOpen, setAccountOpen] = useState(false);
+  const [accountTab, setAccountTab] = useState("signin");
   const [toast, setToast] = useState(null);
   const [navDark, setNavDark] = useState(false);
 
@@ -110,7 +112,7 @@ export default function STBStore() {
       <style>{css}</style>
       <div className="stb">
 
-        {/* ── NAV ── */}
+        {/* ââ NAV ââ */}
         <nav className={`nav ${navDark ? "nav--dark" : ""}`}>
           <ul className="nav__links nav__links--left">
             {["NYC", "STB", "LA"].map((c) => (
@@ -118,6 +120,14 @@ export default function STBStore() {
                 <button className="nav__link" onClick={() => { setFilter(c); scrollTo("products"); }}>{c}</button>
               </li>
             ))}
+            <li>
+              <button className="nav__account-btn" onClick={() => setAccountOpen(true)} aria-label="Account">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="8" r="4"/>
+                  <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+                </svg>
+              </button>
+            </li>
           </ul>
 
           <button className="nav__logo" onClick={() => { setFilter("ALL"); window.scrollTo({ top: 0, behavior: "smooth" }); }}>
@@ -137,7 +147,7 @@ export default function STBStore() {
           </ul>
         </nav>
 
-          {/* ── HERO ── */}
+          {/* ââ HERO ââ */}
           <section className="hero">
             <img className="hero__img" src={HERO_IMG} alt="STB Editorial" />
             <div className="hero__veil" />
@@ -154,7 +164,7 @@ export default function STBStore() {
            <div className="hero__scroll-hint" aria-hidden="true"><span /></div>
           </section>
 
-        {/* ── MANIFESTO ── */}
+        {/* ââ MANIFESTO ââ */}
         <section className="manifesto">
           <div className="manifesto__left">
             <p className="label">Our Vision</p>
@@ -162,13 +172,13 @@ export default function STBStore() {
           </div>
           <div className="manifesto__right">
             <p className="manifesto__copy">
-              STB was built on one belief: excellence should be accessible. From the streets of New York to the coasts of Los Angeles, every piece is designed with intention — for those who move with purpose.
+              STB was built on one belief: excellence should be accessible. From the streets of New York to the coasts of Los Angeles, every piece is designed with intention â for those who move with purpose.
             </p>
-            <button className="manifesto__link">Our Story →</button>
+            <button className="manifesto__link">Our Story â</button>
           </div>
         </section>
 
-        {/* ── COLLECTIONS ── */}
+        {/* ââ COLLECTIONS ââ */}
         <section className="collections" id="collections">
           <div className="collections__head">
             <h2 className="section-title">Collections</h2>
@@ -194,7 +204,7 @@ export default function STBStore() {
           </div>
         </section>
 
-        {/* ── PRODUCTS ── */}
+        {/* ââ PRODUCTS ââ */}
         <section className="products" id="products">
           <div className="products__head">
             <h2 className="section-title">{filter === "ALL" ? "All Products" : `${filter} Collection`}</h2>
@@ -234,7 +244,7 @@ export default function STBStore() {
           </div>
         </section>
 
-        {/* ── FOOTER ── */}
+        {/* ââ FOOTER ââ */}
         <footer className="footer">
           <div className="footer__top">
             <div className="footer__brand">
@@ -261,7 +271,7 @@ export default function STBStore() {
             </div>
           </div>
           <div className="footer__bottom">
-            <p className="footer__copy">© 2025 Strictly Thee Best. All Rights Reserved.</p>
+            <p className="footer__copy">Â© 2025 Strictly Thee Best. All Rights Reserved.</p>
             <div className="footer__legal">
               <span className="footer__link">Privacy Policy</span>
               <span className="footer__link">Terms of Service</span>
@@ -269,7 +279,7 @@ export default function STBStore() {
           </div>
         </footer>
 
-        {/* ── PRODUCT MODAL ── */}
+        {/* ââ PRODUCT MODAL ââ */}
         {modal && (
           <div className="modal-backdrop" onClick={(e) => e.target === e.currentTarget && setModal(null)}>
             <div className="modal">
@@ -279,7 +289,7 @@ export default function STBStore() {
                   : <div className="modal__img-placeholder">STB</div>}
               </div>
               <div className="modal__body">
-                <button className="modal__close" onClick={() => setModal(null)}>✕</button>
+                <button className="modal__close" onClick={() => setModal(null)}>â</button>
                 <p className="modal__coll">{COLLECTIONS.find((c) => modal.tags.includes(c.id))?.id ?? "STB"} Collection</p>
                 <h3 className="modal__name">{modal.title}</h3>
                 <p className="modal__price">{fmtPrice(modal)}</p>
@@ -292,21 +302,58 @@ export default function STBStore() {
                   ))}
                 </div>
                 <button className="modal__add" disabled={!variant || adding} onClick={handleAddToCart}>
-                  {adding ? "Adding…" : variant ? "Add to Bag" : "Select a Size"}
+                  {adding ? "Addingâ¦" : variant ? "Add to Bag" : "Select a Size"}
                 </button>
               </div>
             </div>
           </div>
         )}
 
-        {/* ── TOAST ── */}
+        {/* ââ TOAST ââ */}
         {toast && <div className="toast">{toast}</div>}
       </div>
     </>
+
+      {/* ── ACCOUNT MODAL ── */}
+      {accountOpen && (
+        <div className="account-overlay" onClick={() => setAccountOpen(false)}>
+          <div className="account-modal" onClick={e => e.stopPropagation()}>
+            <button className="account-modal__close" onClick={() => setAccountOpen(false)}>✕</button>
+            <div className="account-modal__tabs">
+              <button
+                className={"account-modal__tab" + (accountTab === "signin" ? " active" : "")}
+                onClick={() => setAccountTab("signin")}>Sign In</button>
+              <button
+                className={"account-modal__tab" + (accountTab === "create" ? " active" : "")}
+                onClick={() => setAccountTab("create")}>Create Account</button>
+            </div>
+            {accountTab === "signin" && (
+              <div className="account-modal__form">
+                <p className="account-modal__sub">Welcome back</p>
+                <input className="account-modal__input" type="email" placeholder="Email address" />
+                <input className="account-modal__input" type="password" placeholder="Password" />
+                <button className="account-modal__cta">SIGN IN</button>
+                <p className="account-modal__forgot">Forgot your password?</p>
+              </div>
+            )}
+            {accountTab === "create" && (
+              <div className="account-modal__form">
+                <p className="account-modal__sub">Join STB</p>
+                <input className="account-modal__input" type="text" placeholder="First name" />
+                <input className="account-modal__input" type="text" placeholder="Last name" />
+                <input className="account-modal__input" type="email" placeholder="Email address" />
+                <input className="account-modal__input" type="password" placeholder="Password" />
+                <button className="account-modal__cta">CREATE ACCOUNT</button>
+                <p className="account-modal__forgot">Track orders · Save favorites · Early access</p>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
   );
 }
 
-// ─── Styles ──────────────────────────────────────────────────────────────────
+// âââ Styles ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 const css = `
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Barlow+Condensed:wght@300;400;500;600&display=swap');
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -439,4 +486,25 @@ html { scroll-behavior: smooth; }
 /* TOAST */
 .toast { position: fixed; bottom: 44px; left: 50%; transform: translateX(-50%); background: var(--gold); color: var(--black); padding: 14px 36px; font-size: 11px; font-weight: 700; letter-spacing: .4em; text-transform: uppercase; z-index: 300; animation: toastIn .35s cubic-bezier(.16,1,.3,1); white-space: nowrap; }
 @keyframes toastIn { from { opacity: 0; transform: translate(-50%, 16px); } to { opacity: 1; transform: translate(-50%, 0); } }
+
+/* ── ACCOUNT BTN ── */
+.nav__account-btn { background: none; border: none; cursor: pointer; color: #fff; display: flex; align-items: center; padding: 4px 8px; opacity: .85; transition: opacity .2s; }
+.nav__account-btn:hover { opacity: 1; }
+
+/* ── ACCOUNT MODAL ── */
+.account-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.72); z-index: 1200; display: flex; align-items: center; justify-content: center; }
+.account-modal { background: #0a0a0a; border: 1px solid #2a2a2a; width: 100%; max-width: 400px; padding: 40px 36px 44px; position: relative; color: #fff; }
+.account-modal__close { position: absolute; top: 16px; right: 20px; background: none; border: none; color: #888; font-size: 18px; cursor: pointer; }
+.account-modal__close:hover { color: #fff; }
+.account-modal__tabs { display: flex; border-bottom: 1px solid #2a2a2a; margin-bottom: 28px; }
+.account-modal__tab { flex: 1; background: none; border: none; color: #666; font-family: inherit; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; padding: 12px 0; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color .2s, border-color .2s; }
+.account-modal__tab.active { color: #c9a84c; border-bottom-color: #c9a84c; }
+.account-modal__sub { font-size: 13px; color: #888; margin-bottom: 24px; letter-spacing: .04em; }
+.account-modal__input { width: 100%; background: #111; border: 1px solid #2a2a2a; color: #fff; font-family: inherit; font-size: 13px; padding: 12px 14px; margin-bottom: 12px; outline: none; box-sizing: border-box; }
+.account-modal__input::placeholder { color: #555; }
+.account-modal__input:focus { border-color: #c9a84c; }
+.account-modal__cta { width: 100%; background: #c9a84c; color: #000; border: none; font-family: inherit; font-size: 11px; letter-spacing: .14em; font-weight: 600; padding: 14px; cursor: pointer; margin-top: 4px; transition: background .2s; }
+.account-modal__cta:hover { background: #e0b85a; }
+.account-modal__forgot { text-align: center; font-size: 11px; color: #555; margin-top: 16px; cursor: pointer; letter-spacing: .06em; }
+.account-modal__forgot:hover { color: #c9a84c; }
 `;
