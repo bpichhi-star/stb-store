@@ -142,7 +142,6 @@ export default function STBStore() {
           <img className="hero__img" src={HERO_IMG} alt="STB Editorial" />
           <div className="hero__veil" />
           <div className="hero__center">
-            <p className="hero__season">New Season &nbsp;·&nbsp; SS 2025</p>
             <img src={logoImg} className="hero__logo-img" alt="STB" />
             <div className="hero__divider-row">
               <span className="hero__line" />
