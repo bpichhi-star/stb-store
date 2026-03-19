@@ -337,11 +337,11 @@ html { scroll-behavior: smooth; }
 .hero__img { position: absolute; inset: -72px 0 0 0; width: 100%; height: calc(100% + 72px); object-fit: cover; object-position: center 15%; filter: brightness(.55) saturate(.9); transform: scale(1.04); animation: heroZoom 9s ease forwards; }
 @keyframes heroZoom { from { transform: scale(1.04); } to { transform: scale(1.00); } }
 .hero__veil { position: absolute; inset: 0; background: radial-gradient(ellipse 70% 60% at 50% 50%, transparent 30%, rgba(8,8,8,.55) 100%), linear-gradient(to bottom, rgba(8,8,8,.45) 0%, transparent 30%, transparent 65%, rgba(8,8,8,.85) 100%); }
-.hero__center { position: relative; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 0; animation: heroReveal 1.4s cubic-bezier(.16,1,.3,1) .1s both; }
+.hero__center { position: relative; text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 0; animation: heroReveal 1.4s cubic-bezier(.16,1,.3,1) .1s both; margin-right: 6vw; }
 @keyframes heroReveal { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
 .hero__season { font-size: 10px; font-weight: 600; letter-spacing: .6em; text-transform: uppercase; color: var(--gold); margin-bottom: 28px; }
-.hero__logo-img { width: clamp(260px, 38vw, 520px); height: auto; object-fit: contain; margin-bottom: 36px; filter: drop-shadow(0 4px 24px rgba(0,0,0,0.6)); animation: heroReveal 1.4s cubic-bezier(.16,1,.3,1) .35s both; }
-.hero__divider-row { display: flex; align-items: center; gap: 20px; width: 100%; max-width: 500px; margin-bottom: 44px; }
+.hero__logo-img { width: clamp(220px, 32vw, 440px); height: auto; object-fit: contain; margin-bottom: 36px; mix-blend-mode: screen; animation: heroReveal 1.4s cubic-bezier(.16,1,.3,1) .35s both; }
+.hero__divider-row { display: flex; align-items: center; gap: 20px; width: 100%; max-width: 400px; margin-bottom: 44px; }
 .hero__line { flex: 1; height: 1px; background: rgba(242,237,229,.25); }
 .hero__for-all { font-size: 11px; font-weight: 600; letter-spacing: .75em; text-transform: uppercase; color: rgba(242,237,229,.6); white-space: nowrap; }
 .hero__cta { display: inline-block; padding: 15px 56px; border: 1px solid rgba(242,237,229,.5); font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: .45em; text-transform: uppercase; color: var(--cream); background: transparent; cursor: pointer; transition: background .3s, color .3s, border-color .3s; }
