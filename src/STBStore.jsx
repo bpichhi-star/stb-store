@@ -335,7 +335,7 @@ export default function STBStore() {
                 <p className="account-modal__forgot">Forgot your password?</p>
               </div>
             )}
-    </>
+
             {accountTab === "create" && (
               <div className="account-modal__form">
                 <p className="account-modal__sub">Join STB</p>
