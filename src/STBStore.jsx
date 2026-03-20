@@ -730,7 +730,7 @@ html { scroll-behavior: smooth; }
   transform: translateY(-10px); opacity: 0; pointer-events: none;
   transition: transform .35s cubic-bezier(.16,1,.3,1), opacity .3s ease;
 }
-.menu-panel--open {
+.menu-panel.menu-panel--open {
   transform: translateY(0); opacity: 1; pointer-events: auto;
 }
 .menu-panel__links { display: flex; flex-direction: column; gap: 20px; }
