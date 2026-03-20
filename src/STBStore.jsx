@@ -244,17 +244,16 @@ export default function STBStore() {
             </li>
           </ul>
 
-          {/* Mobile hamburger */}
-          <button className="nav__hamburger nav__mobile" onClick={() => setMobileMenu(!mobileMenu)} aria-label="Menu">
-            <span className={`nav__hamburger-line ${mobileMenu ? "open" : ""}`} />
-            <span className={`nav__hamburger-line ${mobileMenu ? "open" : ""}`} />
+          {/* Mobile brand (left) */}
+          <button className="nav__brand-logo nav__mobile" onClick={goHome} style={{ background: "none", border: "none", cursor: "pointer", padding: 0 }}>
+            <img src={logoImg} alt="STB" className="nav__logo-img" />
           </button>
 
           {/* Desktop Right */}
           <ul className="nav__links nav__links--right nav__desktop">
             <li>
-              <button className="nav__brand-text" onClick={goHome} style={{ background: "none", border: "none", cursor: "pointer" }}>
-                Strictly Thee Best
+              <button className="nav__brand-logo" onClick={goHome} style={{ background: "none", border: "none", cursor: "pointer", padding: 0 }}>
+                <img src={logoImg} alt="STB" className="nav__logo-img" />
               </button>
             </li>
             <li><button className="nav__link" onClick={() => { setPage("home"); setTimeout(() => scrollTo("products"), 100); }}>Shop</button></li>
@@ -265,15 +264,16 @@ export default function STBStore() {
             </li>
           </ul>
 
-          {/* Mobile brand */}
-          <button className="nav__brand-text nav__mobile" onClick={goHome} style={{ background: "none", border: "none", cursor: "pointer" }}>
-            Strictly Thee Best
-          </button>
-
-          {/* Mobile right */}
-          <button className="nav__cart nav__mobile" onClick={() => cartQty > 0 ? setCartOpen(true) : showToast("Your bag is empty")}>
-            Bag {cartQty > 0 && <span className="nav__cart-count">{cartQty}</span>}
-          </button>
+          {/* Mobile right group */}
+          <div className="nav__mobile-right nav__mobile">
+            <button className="nav__cart" onClick={() => cartQty > 0 ? setCartOpen(true) : showToast("Your bag is empty")}>
+              Bag {cartQty > 0 && <span className="nav__cart-count">{cartQty}</span>}
+            </button>
+            <button className="nav__hamburger" onClick={() => setMobileMenu(!mobileMenu)} aria-label="Menu">
+              <span className={`nav__hamburger-line ${mobileMenu ? "open" : ""}`} />
+              <span className={`nav__hamburger-line ${mobileMenu ? "open" : ""}`} />
+            </button>
+          </div>
         </nav>
 
         {/* ── Mobile Menu Overlay ── */}
@@ -305,22 +305,6 @@ export default function STBStore() {
                 <button className="hero__cta" onClick={() => scrollTo("collections")}>Explore the Collection</button>
               </div>
               <div className="hero__scroll-hint" aria-hidden="true"><span /></div>
-            </section>
-
-            {/* ── MANIFESTO ── */}
-            <section className="manifesto">
-              <Reveal className="manifesto__left" direction="right">
-                <p className="label">Our Vision</p>
-                <h2 className="manifesto__headline">
-                  Crafted for<br />the <em>Few</em>,<br />worn by<br />the Many.
-                </h2>
-              </Reveal>
-              <Reveal className="manifesto__right" delay={0.15}>
-                <p className="manifesto__copy">
-                  STB was built on one belief: excellence should be accessible. From the streets of New York to the coasts of Los Angeles, every piece is designed with intention &mdash; for those who move with purpose.
-                </p>
-                <button className="manifesto__link" onClick={goToStory}>Our Story &rarr;</button>
-              </Reveal>
             </section>
 
             {/* ── COLLECTIONS ── */}
@@ -503,7 +487,9 @@ export default function STBStore() {
         <footer className="footer">
           <div className="footer__top">
             <div className="footer__brand">
-              <img src={logoImg} className="footer__logo-img" alt="STB — Strictly Thee Best" loading="lazy" />
+              <button onClick={goHome} style={{ background: "none", border: "none", cursor: "pointer", padding: 0 }}>
+                <img src={logoImg} className="footer__logo-img" alt="STB — Strictly Thee Best" loading="lazy" />
+              </button>
               <p className="footer__for-all">For All</p>
             </div>
             <div className="footer__col">
@@ -734,6 +720,9 @@ html { scroll-behavior: smooth; }
   font-family: 'Cormorant Garamond', serif; font-size: 13px; font-weight: 400;
   letter-spacing: 0.2em; color: var(--gold); white-space: nowrap;
 }
+.nav__brand-logo { display: flex; align-items: center; }
+.nav__logo-img { height: 32px; width: auto; object-fit: contain; opacity: .9; transition: opacity .2s; }
+.nav__brand-logo:hover .nav__logo-img { opacity: 1; }
 .nav__cart {
   position: relative; font-size: 12px; font-weight: 600; letter-spacing: 0.22em;
   text-transform: uppercase; color: var(--cream); background: none; border: none;
@@ -751,6 +740,7 @@ html { scroll-behavior: smooth; }
 }
 .nav__account-btn:hover { opacity: 1; }
 .nav__mobile { display: none; }
+.nav__mobile-right { display: none; align-items: center; gap: 20px; }
 
 /* Hamburger */
 .nav__hamburger {
@@ -1196,6 +1186,7 @@ html { scroll-behavior: smooth; }
 @media (max-width: 768px) {
   .nav__desktop { display: none !important; }
   .nav__mobile { display: flex; }
+  .nav__mobile-right { display: flex; }
   .nav { padding: 0 20px; }
   .hero { padding: 0 24px 80px; min-height: 600px; }
   .manifesto { grid-template-columns: 1fr; }
