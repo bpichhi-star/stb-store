@@ -146,7 +146,7 @@ export default function STBStore() {
           </ul>
 
           <button className="nav__logo" onClick={() => { setFilter("ALL"); window.scrollTo({ top: 0, behavior: "smooth" }); }}>
-            <img src={logoImg} className="nav__logo-img" alt="STB" />
+            STB
           </button>
 
           <ul className="nav__links nav__links--right">
@@ -442,8 +442,11 @@ html { scroll-behavior: smooth; }
   color: var(--gold); white-space: nowrap;
 }
 
-.nav__logo { background: none; border: none; cursor: pointer; display: flex; align-items: center; padding: 0; }
-.nav__logo-img { height: 44px; width: auto; object-fit: contain; }
+.nav__logo {
+  background: none; border: none; cursor: pointer; display: flex; align-items: center; padding: 0;
+  font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 300;
+  letter-spacing: 0.25em; color: var(--cream); text-transform: uppercase;
+}
 
 .nav__cart {
   position: relative; font-size: 12px; font-weight: 600;
