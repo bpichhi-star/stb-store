@@ -471,14 +471,15 @@ html { scroll-behavior: smooth; }
 .hero {
   position: relative; height: 100vh; min-height: 700px;
   display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
+  align-items: flex-start; justify-content: flex-end;
   overflow: hidden;
+  padding: 0 0 100px 64px;
 }
 
 .hero__img {
   position: absolute; inset: 0; width: 100%; height: 100%;
   object-fit: cover; object-position: center 15%;
-  filter: brightness(.55) saturate(.9);
+  filter: brightness(.82) saturate(1);
   transform: scale(1.04);
   animation: heroZoom 9s ease forwards;
 }
@@ -487,13 +488,12 @@ html { scroll-behavior: smooth; }
 .hero__veil {
   position: absolute; inset: 0;
   background:
-    radial-gradient(ellipse 70% 60% at 50% 50%, transparent 30%, rgba(8,8,8,.55) 100%),
-    linear-gradient(to bottom, rgba(8,8,8,.45) 0%, transparent 30%, transparent 65%, rgba(8,8,8,.85) 100%);
+    linear-gradient(to bottom, rgba(8,8,8,.35) 0%, transparent 25%, transparent 60%, rgba(8,8,8,.7) 100%);
 }
 
 .hero__content {
   position: relative; z-index: 2;
-  display: flex; flex-direction: column; align-items: center;
+  display: flex; flex-direction: column; align-items: flex-start;
   gap: 36px;
   animation: heroReveal 1.4s cubic-bezier(.16,1,.3,1) .1s both;
 }
@@ -580,12 +580,12 @@ html { scroll-behavior: smooth; }
 .coll-card__img {
   position: absolute; inset: 0; width: 100%; height: 100%;
   object-fit: cover; object-position: center top;
-  filter: brightness(.55) saturate(.7);
+  filter: brightness(.75) saturate(.85);
   transition: transform .75s cubic-bezier(.25,.46,.45,.94), filter .5s;
 }
-.coll-card:hover .coll-card__img { transform: scale(1.06); filter: brightness(.45) saturate(.6); }
+.coll-card:hover .coll-card__img { transform: scale(1.06); filter: brightness(.6) saturate(.75); }
 
-.coll-card__overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(8,8,8,.75) 0%, transparent 55%); }
+.coll-card__overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(8,8,8,.6) 0%, transparent 50%); }
 .coll-card__body { position: absolute; bottom: 0; left: 0; right: 0; padding: 40px; text-align: left; }
 .coll-card__tag { font-size: 9px; font-weight: 700; letter-spacing: .45em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
 .coll-card__name { font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: 52px; color: var(--cream); line-height: 1; margin-bottom: 4px; }
@@ -790,6 +790,7 @@ html { scroll-behavior: smooth; }
 
 /* ═══ RESPONSIVE ═══ */
 @media (max-width: 768px) {
+  .hero { padding: 0 0 80px 32px; }
   .nav { padding: 0 20px; }
   .nav__links { gap: 16px; }
   .nav__brand-text { display: none; }
