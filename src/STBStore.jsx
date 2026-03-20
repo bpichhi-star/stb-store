@@ -487,15 +487,15 @@ html { scroll-behavior: smooth; }
 
 .hero__content {
   position: relative; z-index: 2;
-  display: flex; flex-direction: column; align-items: flex-start;
+  display: flex; flex-direction: column; align-items: center;
   gap: 20px;
   animation: heroReveal 1.4s cubic-bezier(.16,1,.3,1) .1s both;
 }
 
 .hero__title {
+  font-size: 18px; font-weight: 300; letter-spacing: .45em;
+  text-transform: uppercase; color: rgba(242,237,229,.7);
   font-family: 'Cormorant Garamond', serif;
-  font-weight: 300; font-size: clamp(60px, 8vw, 110px);
-  letter-spacing: 0.3em; color: var(--cream);
   line-height: 1; margin: 0;
 }
 @keyframes heroReveal { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
@@ -506,8 +506,9 @@ html { scroll-behavior: smooth; }
 }
 .hero__line { flex: 1; height: 1px; background: rgba(242,237,229,.25); }
 .hero__for-all {
-  font-size: 11px; font-weight: 600; letter-spacing: .75em;
-  text-transform: uppercase; color: rgba(242,237,229,.6); white-space: nowrap;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px; font-weight: 300; letter-spacing: .45em;
+  text-transform: uppercase; color: rgba(242,237,229,.7); white-space: nowrap;
 }
 
 .hero__cta {
