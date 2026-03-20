@@ -248,25 +248,24 @@ export default function STBStore() {
           </div>
         </nav>
 
-        {/* ── Hamburger Menu Overlay ── */}
+        {/* ── Hamburger Menu Panel ── */}
         {mobileMenu && (
-          <div className="mobile-menu" onClick={() => setMobileMenu(false)}>
-            <div className="mobile-menu__inner" onClick={(e) => e.stopPropagation()}>
-              <div className="mobile-menu__links">
-                <p className="mobile-menu__label">Collections</p>
-                <button onClick={() => { setFilter("STB"); setPage("home"); setMobileMenu(false); setTimeout(() => scrollTo("products"), 100); }}>STB Collection</button>
-                <button onClick={() => { setFilter("NYC"); setPage("home"); setMobileMenu(false); setTimeout(() => scrollTo("products"), 100); }}>NYC Collection</button>
-                <button onClick={() => { setFilter("LA"); setPage("home"); setMobileMenu(false); setTimeout(() => scrollTo("products"), 100); }}>LA Collection</button>
-                <div className="mobile-menu__divider" />
-                <button onClick={() => { setAccountOpen(true); setMobileMenu(false); setAccountTab("signin"); }}>Sign In</button>
-                <button onClick={() => { setAccountOpen(true); setMobileMenu(false); setAccountTab("create"); }}>Create Account</button>
-                <div className="mobile-menu__divider" />
-                <button onClick={() => { goToStory(); }}>Our Story</button>
-                <button onClick={() => { setMobileMenu(false); showToast("Contact: hello@strictlytheebest.net"); }}>Contact Us</button>
-              </div>
-            </div>
-          </div>
+          <div className="menu-backdrop" onClick={() => setMobileMenu(false)} />
         )}
+        <div className={`menu-panel ${mobileMenu ? "menu-panel--open" : ""}`}>
+          <div className="menu-panel__links">
+            <p className="menu-panel__label">Collections</p>
+            <button onClick={() => { setFilter("STB"); setPage("home"); setMobileMenu(false); setTimeout(() => scrollTo("products"), 100); }}>STB Collection</button>
+            <button onClick={() => { setFilter("NYC"); setPage("home"); setMobileMenu(false); setTimeout(() => scrollTo("products"), 100); }}>NYC Collection</button>
+            <button onClick={() => { setFilter("LA"); setPage("home"); setMobileMenu(false); setTimeout(() => scrollTo("products"), 100); }}>LA Collection</button>
+            <div className="menu-panel__divider" />
+            <button onClick={() => { setAccountOpen(true); setMobileMenu(false); setAccountTab("signin"); }}>Sign In</button>
+            <button onClick={() => { setAccountOpen(true); setMobileMenu(false); setAccountTab("create"); }}>Create Account</button>
+            <div className="menu-panel__divider" />
+            <button onClick={() => { goToStory(); }}>Our Story</button>
+            <button onClick={() => { setMobileMenu(false); showToast("Contact: hello@strictlytheebest.net"); }}>Contact Us</button>
+          </div>
+        </div>
 
         {/* ══════════════════ HOME PAGE ══════════════════ */}
         {page === "home" && (
@@ -718,26 +717,36 @@ html { scroll-behavior: smooth; }
 .nav__hamburger-line.open:first-child { transform: translateY(3.75px) rotate(45deg); }
 .nav__hamburger-line.open:last-child { transform: translateY(-3.75px) rotate(-45deg); }
 
-/* Hamburger Menu Overlay */
-.mobile-menu {
-  position: fixed; inset: 0; background: rgba(8,8,8,.96); z-index: 105;
-  display: flex; align-items: center; justify-content: center;
+/* Hamburger Menu Panel */
+.menu-backdrop {
+  position: fixed; inset: 0; background: rgba(8,8,8,.5); z-index: 104;
   animation: fadeIn .3s ease;
 }
-.mobile-menu__inner { text-align: center; }
-.mobile-menu__links { display: flex; flex-direction: column; gap: 24px; }
-.mobile-menu__label {
+.menu-panel {
+  position: fixed; top: 72px; left: 0; width: 360px; max-width: 85vw;
+  background: var(--dim); border-right: 1px solid var(--divider);
+  border-bottom: 1px solid var(--divider);
+  z-index: 106; padding: 40px 40px 48px;
+  transform: translateY(-10px); opacity: 0; pointer-events: none;
+  transition: transform .35s cubic-bezier(.16,1,.3,1), opacity .3s ease;
+}
+.menu-panel--open {
+  transform: translateY(0); opacity: 1; pointer-events: auto;
+}
+.menu-panel__links { display: flex; flex-direction: column; gap: 20px; }
+.menu-panel__label {
   font-size: 10px; font-weight: 600; letter-spacing: .45em; text-transform: uppercase;
-  color: var(--gold); margin-bottom: -8px;
+  color: var(--gold); margin-bottom: -4px;
 }
-.mobile-menu__links button {
+.menu-panel__links button {
   background: none; border: none; color: var(--cream);
-  font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 300;
-  letter-spacing: .1em; cursor: pointer; transition: color .2s;
+  font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 400;
+  letter-spacing: .15em; text-transform: uppercase; cursor: pointer;
+  transition: color .2s; text-align: left; padding: 0;
 }
-.mobile-menu__links button:hover { color: var(--gold); }
-.mobile-menu__divider {
-  width: 40px; height: 1px; background: var(--divider); margin: 4px auto;
+.menu-panel__links button:hover { color: var(--gold); }
+.menu-panel__divider {
+  width: 100%; height: 1px; background: var(--divider); margin: 4px 0;
 }
 
 /* ═══ HERO ═══ */
