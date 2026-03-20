@@ -161,12 +161,8 @@ export default function STBStore() {
           <img className="hero__img" src={HERO_IMG} alt="STB Editorial" />
           <div className="hero__veil" />
           <div className="hero__content">
-            <h1 className="hero__title">STB</h1>
-            <div className="hero__divider-row">
-              <span className="hero__line" />
-              <p className="hero__for-all">For All</p>
-              <span className="hero__line" />
-            </div>
+            <p className="hero__tagline">STB</p>
+            <p className="hero__tagline">For All</p>
             <button className="hero__cta" onClick={() => scrollTo("collections")}>
               Explore the Collection
             </button>
@@ -491,24 +487,13 @@ html { scroll-behavior: smooth; }
   gap: 20px;
   animation: heroReveal 1.4s cubic-bezier(.16,1,.3,1) .1s both;
 }
-
-.hero__title {
-  font-size: 18px; font-weight: 300; letter-spacing: .45em;
-  text-transform: uppercase; color: rgba(242,237,229,.7);
-  font-family: 'Cormorant Garamond', serif;
-  line-height: 1; margin: 0;
-}
 @keyframes heroReveal { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
 
-.hero__divider-row {
-  display: flex; align-items: center; gap: 20px;
-  width: 100%; max-width: 400px;
-}
-.hero__line { flex: 1; height: 1px; background: rgba(242,237,229,.25); }
-.hero__for-all {
+.hero__tagline {
   font-family: 'Cormorant Garamond', serif;
   font-size: 18px; font-weight: 300; letter-spacing: .45em;
-  text-transform: uppercase; color: rgba(242,237,229,.7); white-space: nowrap;
+  text-transform: uppercase; color: rgba(242,237,229,.8);
+  margin: 0;
 }
 
 .hero__cta {
