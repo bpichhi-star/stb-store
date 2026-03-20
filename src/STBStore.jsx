@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import heroPhoto from "./Landing.png";
 import logoImg from "./logo.png";
 
-// âââ Shopify Config âââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+// Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂ Shopify Config Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
 const DOMAIN = "stb-4219.myshopify.com";
 const TOKEN = "a64dd51a0b0ac5b428d9cb11c55de8cf";
 
@@ -40,7 +40,7 @@ async function shopify(query) {
   return json.data;
 }
 
-// âââ Assets ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+// Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂ Assets Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
 const HERO_IMG = heroPhoto;
 const COLLECTIONS = [
   { id: "NYC", label: "NYC Collection", sub: "Streets Never Sleep", img: "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=900&q=85" },
@@ -48,10 +48,10 @@ const COLLECTIONS = [
   { id: "LA", label: "LA Collection", sub: "Golden State of Mind", img: "https://images.unsplash.com/photo-1580655653885-65763b2597d0?w=900&q=85" },
 ];
 
-// âââ Utilities âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+// Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂ Utilities Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
 const fmtPrice = (p) => new Intl.NumberFormat("en-US", { style: "currency", currency: p.priceRange.minVariantPrice.currencyCode }).format(parseFloat(p.priceRange.minVariantPrice.amount));
 
-// âââ Component âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+// Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂ Component Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
 export default function STBStore() {
   const [products, setProducts] = useState([]);
   const [loadingProducts, setLoadingProducts] = useState(true);
@@ -112,7 +112,7 @@ export default function STBStore() {
       <style>{css}</style>
       <div className="stb">
 
-        {/* ââ NAV ââ */}
+        {/* Ã¢ÂÂÃ¢ÂÂ NAV Ã¢ÂÂÃ¢ÂÂ */}
         <nav className={`nav ${navDark ? "nav--dark" : ""}`}>
           <ul className="nav__links nav__links--left">
             {["NYC", "STB", "LA"].map((c) => (
@@ -147,7 +147,7 @@ export default function STBStore() {
           </ul>
         </nav>
 
-          {/* ââ HERO ââ */}
+          {/* Ã¢ÂÂÃ¢ÂÂ HERO Ã¢ÂÂÃ¢ÂÂ */}
           <section className="hero">
             <img className="hero__img" src={HERO_IMG} alt="STB Editorial" />
             <div className="hero__veil" />
@@ -164,7 +164,7 @@ export default function STBStore() {
            <div className="hero__scroll-hint" aria-hidden="true"><span /></div>
           </section>
 
-        {/* ââ MANIFESTO ââ */}
+        {/* Ã¢ÂÂÃ¢ÂÂ MANIFESTO Ã¢ÂÂÃ¢ÂÂ */}
         <section className="manifesto">
           <div className="manifesto__left">
             <p className="label">Our Vision</p>
@@ -172,13 +172,13 @@ export default function STBStore() {
           </div>
           <div className="manifesto__right">
             <p className="manifesto__copy">
-              STB was built on one belief: excellence should be accessible. From the streets of New York to the coasts of Los Angeles, every piece is designed with intention â for those who move with purpose.
+              STB was built on one belief: excellence should be accessible. From the streets of New York to the coasts of Los Angeles, every piece is designed with intention Ã¢ÂÂ for those who move with purpose.
             </p>
-            <button className="manifesto__link">Our Story â</button>
+            <button className="manifesto__link">Our Story Ã¢ÂÂ</button>
           </div>
         </section>
 
-        {/* ââ COLLECTIONS ââ */}
+        {/* Ã¢ÂÂÃ¢ÂÂ COLLECTIONS Ã¢ÂÂÃ¢ÂÂ */}
         <section className="collections" id="collections">
           <div className="collections__head">
             <h2 className="section-title">Collections</h2>
@@ -204,7 +204,7 @@ export default function STBStore() {
           </div>
         </section>
 
-        {/* ââ PRODUCTS ââ */}
+        {/* Ã¢ÂÂÃ¢ÂÂ PRODUCTS Ã¢ÂÂÃ¢ÂÂ */}
         <section className="products" id="products">
           <div className="products__head">
             <h2 className="section-title">{filter === "ALL" ? "All Products" : `${filter} Collection`}</h2>
@@ -244,7 +244,7 @@ export default function STBStore() {
           </div>
         </section>
 
-        {/* ââ FOOTER ââ */}
+        {/* Ã¢ÂÂÃ¢ÂÂ FOOTER Ã¢ÂÂÃ¢ÂÂ */}
         <footer className="footer">
           <div className="footer__top">
             <div className="footer__brand">
@@ -271,7 +271,7 @@ export default function STBStore() {
             </div>
           </div>
           <div className="footer__bottom">
-            <p className="footer__copy">Â© 2025 Strictly Thee Best. All Rights Reserved.</p>
+            <p className="footer__copy">ÃÂ© 2025 Strictly Thee Best. All Rights Reserved.</p>
             <div className="footer__legal">
               <span className="footer__link">Privacy Policy</span>
               <span className="footer__link">Terms of Service</span>
@@ -279,7 +279,7 @@ export default function STBStore() {
           </div>
         </footer>
 
-        {/* ââ PRODUCT MODAL ââ */}
+        {/* Ã¢ÂÂÃ¢ÂÂ PRODUCT MODAL Ã¢ÂÂÃ¢ÂÂ */}
         {modal && (
           <div className="modal-backdrop" onClick={(e) => e.target === e.currentTarget && setModal(null)}>
             <div className="modal">
@@ -289,7 +289,7 @@ export default function STBStore() {
                   : <div className="modal__img-placeholder">STB</div>}
               </div>
               <div className="modal__body">
-                <button className="modal__close" onClick={() => setModal(null)}>â</button>
+                <button className="modal__close" onClick={() => setModal(null)}>Ã¢ÂÂ</button>
                 <p className="modal__coll">{COLLECTIONS.find((c) => modal.tags.includes(c.id))?.id ?? "STB"} Collection</p>
                 <h3 className="modal__name">{modal.title}</h3>
                 <p className="modal__price">{fmtPrice(modal)}</p>
@@ -302,23 +302,22 @@ export default function STBStore() {
                   ))}
                 </div>
                 <button className="modal__add" disabled={!variant || adding} onClick={handleAddToCart}>
-                  {adding ? "Addingâ¦" : variant ? "Add to Bag" : "Select a Size"}
+                  {adding ? "AddingÃ¢ÂÂ¦" : variant ? "Add to Bag" : "Select a Size"}
                 </button>
               </div>
             </div>
           </div>
         )}
 
-        {/* ââ TOAST ââ */}
+        {/* Ã¢ÂÂÃ¢ÂÂ TOAST Ã¢ÂÂÃ¢ÂÂ */}
         {toast && <div className="toast">{toast}</div>}
       </div>
-    </>
 
-      {/* ── ACCOUNT MODAL ── */}
+      {/* ââ ACCOUNT MODAL ââ */}
       {accountOpen && (
         <div className="account-overlay" onClick={() => setAccountOpen(false)}>
           <div className="account-modal" onClick={e => e.stopPropagation()}>
-            <button className="account-modal__close" onClick={() => setAccountOpen(false)}>✕</button>
+            <button className="account-modal__close" onClick={() => setAccountOpen(false)}>â</button>
             <div className="account-modal__tabs">
               <button
                 className={"account-modal__tab" + (accountTab === "signin" ? " active" : "")}
@@ -336,6 +335,7 @@ export default function STBStore() {
                 <p className="account-modal__forgot">Forgot your password?</p>
               </div>
             )}
+    </>
             {accountTab === "create" && (
               <div className="account-modal__form">
                 <p className="account-modal__sub">Join STB</p>
@@ -344,7 +344,7 @@ export default function STBStore() {
                 <input className="account-modal__input" type="email" placeholder="Email address" />
                 <input className="account-modal__input" type="password" placeholder="Password" />
                 <button className="account-modal__cta">CREATE ACCOUNT</button>
-                <p className="account-modal__forgot">Track orders · Save favorites · Early access</p>
+                <p className="account-modal__forgot">Track orders Â· Save favorites Â· Early access</p>
               </div>
             )}
           </div>
@@ -353,7 +353,7 @@ export default function STBStore() {
   );
 }
 
-// âââ Styles ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+// Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂ Styles Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
 const css = `
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Barlow+Condensed:wght@300;400;500;600&display=swap');
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -487,11 +487,11 @@ html { scroll-behavior: smooth; }
 .toast { position: fixed; bottom: 44px; left: 50%; transform: translateX(-50%); background: var(--gold); color: var(--black); padding: 14px 36px; font-size: 11px; font-weight: 700; letter-spacing: .4em; text-transform: uppercase; z-index: 300; animation: toastIn .35s cubic-bezier(.16,1,.3,1); white-space: nowrap; }
 @keyframes toastIn { from { opacity: 0; transform: translate(-50%, 16px); } to { opacity: 1; transform: translate(-50%, 0); } }
 
-/* ── ACCOUNT BTN ── */
+/* ââ ACCOUNT BTN ââ */
 .nav__account-btn { background: none; border: none; cursor: pointer; color: #fff; display: flex; align-items: center; padding: 4px 8px; opacity: .85; transition: opacity .2s; }
 .nav__account-btn:hover { opacity: 1; }
 
-/* ── ACCOUNT MODAL ── */
+/* ââ ACCOUNT MODAL ââ */
 .account-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.72); z-index: 1200; display: flex; align-items: center; justify-content: center; }
 .account-modal { background: #0a0a0a; border: 1px solid #2a2a2a; width: 100%; max-width: 400px; padding: 40px 36px 44px; position: relative; color: #fff; }
 .account-modal__close { position: absolute; top: 16px; right: 20px; background: none; border: none; color: #888; font-size: 18px; cursor: pointer; }
