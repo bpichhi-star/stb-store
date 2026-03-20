@@ -145,10 +145,6 @@ export default function STBStore() {
             </li>
           </ul>
 
-          <button className="nav__logo" onClick={() => { setFilter("ALL"); window.scrollTo({ top: 0, behavior: "smooth" }); }}>
-            STB
-          </button>
-
           <ul className="nav__links nav__links--right">
             <li><span className="nav__brand-text">Strictly Thee Best</span></li>
             <li><button className="nav__link" onClick={() => scrollTo("products")}>Shop</button></li>
@@ -165,6 +161,7 @@ export default function STBStore() {
           <img className="hero__img" src={HERO_IMG} alt="STB Editorial" />
           <div className="hero__veil" />
           <div className="hero__content">
+            <h1 className="hero__title">STB</h1>
             <div className="hero__divider-row">
               <span className="hero__line" />
               <p className="hero__for-all">For All</p>
@@ -442,12 +439,6 @@ html { scroll-behavior: smooth; }
   color: var(--gold); white-space: nowrap;
 }
 
-.nav__logo {
-  background: none; border: none; cursor: pointer; display: flex; align-items: center; padding: 0;
-  font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 300;
-  letter-spacing: 0.25em; color: var(--cream); text-transform: uppercase;
-}
-
 .nav__cart {
   position: relative; font-size: 12px; font-weight: 600;
   letter-spacing: 0.22em; text-transform: uppercase;
@@ -497,8 +488,15 @@ html { scroll-behavior: smooth; }
 .hero__content {
   position: relative; z-index: 2;
   display: flex; flex-direction: column; align-items: flex-start;
-  gap: 36px;
+  gap: 20px;
   animation: heroReveal 1.4s cubic-bezier(.16,1,.3,1) .1s both;
+}
+
+.hero__title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300; font-size: clamp(60px, 8vw, 110px);
+  letter-spacing: 0.3em; color: var(--cream);
+  line-height: 1; margin: 0;
 }
 @keyframes heroReveal { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
 
