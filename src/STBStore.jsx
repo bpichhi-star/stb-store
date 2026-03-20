@@ -230,63 +230,39 @@ export default function STBStore() {
 
         {/* ══════════════════ NAV ══════════════════ */}
         <nav className={`nav ${navDark ? "nav--dark" : ""}`}>
-          {/* Desktop Left */}
-          <ul className="nav__links nav__links--left nav__desktop">
-            {["NYC", "STB", "LA"].map((c) => (
-              <li key={c}>
-                <button className="nav__link" onClick={() => { setFilter(c); setPage("home"); setTimeout(() => scrollTo("products"), 100); }}>{c}</button>
-              </li>
-            ))}
-            <li>
-              <button className="nav__account-btn" onClick={() => setAccountOpen(true)} aria-label="Account">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-              </button>
-            </li>
-          </ul>
-
-          {/* Mobile brand (left) */}
-          <button className="nav__brand-logo nav__mobile" onClick={goHome} style={{ background: "none", border: "none", cursor: "pointer", padding: 0 }}>
-            <img src={logoImg} alt="STB" className="nav__logo-img" />
+          {/* Left: Hamburger (always visible) */}
+          <button className="nav__hamburger" onClick={() => setMobileMenu(!mobileMenu)} aria-label="Menu">
+            <span className={`nav__hamburger-line ${mobileMenu ? "open" : ""}`} />
+            <span className={`nav__hamburger-line ${mobileMenu ? "open" : ""}`} />
           </button>
 
-          {/* Desktop Right */}
-          <ul className="nav__links nav__links--right nav__desktop">
-            <li>
-              <button className="nav__brand-logo" onClick={goHome} style={{ background: "none", border: "none", cursor: "pointer", padding: 0 }}>
-                <img src={logoImg} alt="STB" className="nav__logo-img" />
-              </button>
-            </li>
-            <li><button className="nav__link" onClick={() => { setPage("home"); setTimeout(() => scrollTo("products"), 100); }}>Shop</button></li>
-            <li>
-              <button className="nav__cart" onClick={() => cartQty > 0 ? setCartOpen(true) : showToast("Your bag is empty")}>
-                Bag {cartQty > 0 && <span className="nav__cart-count">{cartQty}</span>}
-              </button>
-            </li>
-          </ul>
-
-          {/* Mobile right group */}
-          <div className="nav__mobile-right nav__mobile">
+          {/* Right: Logo + Shop + Bag */}
+          <div className="nav__right">
+            <button className="nav__brand-logo" onClick={goHome} style={{ background: "none", border: "none", cursor: "pointer", padding: 0 }}>
+              <img src={logoImg} alt="STB" className="nav__logo-img" />
+            </button>
+            <button className="nav__link" onClick={() => { setPage("home"); setMobileMenu(false); setTimeout(() => scrollTo("products"), 100); }}>Shop</button>
             <button className="nav__cart" onClick={() => cartQty > 0 ? setCartOpen(true) : showToast("Your bag is empty")}>
               Bag {cartQty > 0 && <span className="nav__cart-count">{cartQty}</span>}
-            </button>
-            <button className="nav__hamburger" onClick={() => setMobileMenu(!mobileMenu)} aria-label="Menu">
-              <span className={`nav__hamburger-line ${mobileMenu ? "open" : ""}`} />
-              <span className={`nav__hamburger-line ${mobileMenu ? "open" : ""}`} />
             </button>
           </div>
         </nav>
 
-        {/* ── Mobile Menu Overlay ── */}
+        {/* ── Hamburger Menu Overlay ── */}
         {mobileMenu && (
           <div className="mobile-menu" onClick={() => setMobileMenu(false)}>
             <div className="mobile-menu__inner" onClick={(e) => e.stopPropagation()}>
               <div className="mobile-menu__links">
-                <button onClick={() => { setFilter("ALL"); setPage("home"); setMobileMenu(false); setTimeout(() => scrollTo("products"), 100); }}>Shop All</button>
-                {COLLECTIONS.map((c) => (
-                  <button key={c.id} onClick={() => { setFilter(c.id); setPage("home"); setMobileMenu(false); setTimeout(() => scrollTo("products"), 100); }}>{c.label}</button>
-                ))}
+                <p className="mobile-menu__label">Collections</p>
+                <button onClick={() => { setFilter("STB"); setPage("home"); setMobileMenu(false); setTimeout(() => scrollTo("products"), 100); }}>STB Collection</button>
+                <button onClick={() => { setFilter("NYC"); setPage("home"); setMobileMenu(false); setTimeout(() => scrollTo("products"), 100); }}>NYC Collection</button>
+                <button onClick={() => { setFilter("LA"); setPage("home"); setMobileMenu(false); setTimeout(() => scrollTo("products"), 100); }}>LA Collection</button>
+                <div className="mobile-menu__divider" />
+                <button onClick={() => { setAccountOpen(true); setMobileMenu(false); setAccountTab("signin"); }}>Sign In</button>
+                <button onClick={() => { setAccountOpen(true); setMobileMenu(false); setAccountTab("create"); }}>Create Account</button>
+                <div className="mobile-menu__divider" />
                 <button onClick={() => { goToStory(); }}>Our Story</button>
-                <button onClick={() => { setAccountOpen(true); setMobileMenu(false); }}>Account</button>
+                <button onClick={() => { setMobileMenu(false); showToast("Contact: hello@strictlytheebest.net"); }}>Contact Us</button>
               </div>
             </div>
           </div>
@@ -708,18 +684,13 @@ html { scroll-behavior: smooth; }
   transition: background .4s, border-color .4s; border-bottom: 1px solid transparent;
 }
 .nav--dark { background: rgba(8,8,8,.95); border-bottom-color: var(--divider); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
-.nav__links { display: flex; list-style: none; gap: 32px; flex: 1; align-items: center; }
-.nav__links--right { justify-content: flex-end; }
+.nav__right { display: flex; align-items: center; gap: 32px; }
 .nav__link {
   font-size: 12px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase;
   color: var(--cream); background: none; border: none; cursor: pointer;
   opacity: .75; transition: opacity .2s; padding: 0;
 }
 .nav__link:hover { opacity: 1; }
-.nav__brand-text {
-  font-family: 'Cormorant Garamond', serif; font-size: 13px; font-weight: 400;
-  letter-spacing: 0.2em; color: var(--gold); white-space: nowrap;
-}
 .nav__brand-logo { display: flex; align-items: center; }
 .nav__logo-img { height: 32px; width: auto; object-fit: contain; opacity: .9; transition: opacity .2s; }
 .nav__brand-logo:hover .nav__logo-img { opacity: 1; }
@@ -734,13 +705,6 @@ html { scroll-behavior: smooth; }
   width: 18px; height: 18px; border-radius: 50%; font-size: 9px; font-weight: 700;
   display: flex; align-items: center; justify-content: center;
 }
-.nav__account-btn {
-  background: none; border: none; cursor: pointer; color: var(--cream);
-  display: flex; align-items: center; padding: 4px 8px; opacity: .85; transition: opacity .2s;
-}
-.nav__account-btn:hover { opacity: 1; }
-.nav__mobile { display: none; }
-.nav__mobile-right { display: none; align-items: center; gap: 20px; }
 
 /* Hamburger */
 .nav__hamburger {
@@ -754,20 +718,27 @@ html { scroll-behavior: smooth; }
 .nav__hamburger-line.open:first-child { transform: translateY(3.75px) rotate(45deg); }
 .nav__hamburger-line.open:last-child { transform: translateY(-3.75px) rotate(-45deg); }
 
-/* Mobile Menu */
+/* Hamburger Menu Overlay */
 .mobile-menu {
   position: fixed; inset: 0; background: rgba(8,8,8,.96); z-index: 105;
   display: flex; align-items: center; justify-content: center;
   animation: fadeIn .3s ease;
 }
 .mobile-menu__inner { text-align: center; }
-.mobile-menu__links { display: flex; flex-direction: column; gap: 28px; }
+.mobile-menu__links { display: flex; flex-direction: column; gap: 24px; }
+.mobile-menu__label {
+  font-size: 10px; font-weight: 600; letter-spacing: .45em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: -8px;
+}
 .mobile-menu__links button {
   background: none; border: none; color: var(--cream);
   font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 300;
   letter-spacing: .1em; cursor: pointer; transition: color .2s;
 }
 .mobile-menu__links button:hover { color: var(--gold); }
+.mobile-menu__divider {
+  width: 40px; height: 1px; background: var(--divider); margin: 4px auto;
+}
 
 /* ═══ HERO ═══ */
 .hero {
@@ -1184,14 +1155,10 @@ html { scroll-behavior: smooth; }
 
 /* ═══ RESPONSIVE ═══ */
 @media (max-width: 768px) {
-  .nav__desktop { display: none !important; }
-  .nav__mobile { display: flex; }
-  .nav__mobile-right { display: flex; }
   .nav { padding: 0 20px; }
+  .nav__right { gap: 20px; }
+  .nav__logo-img { height: 26px; }
   .hero { padding: 0 24px 80px; min-height: 600px; }
-  .manifesto { grid-template-columns: 1fr; }
-  .manifesto__left { border-right: none; border-bottom: 1px solid var(--divider); padding: 64px 32px; }
-  .manifesto__right { padding: 64px 32px; }
   .collections__head { flex-direction: column; gap: 24px; padding: 64px 32px 36px; }
   .collections__grid { grid-template-columns: 1fr; }
   .products { padding: 64px 24px 80px; }
