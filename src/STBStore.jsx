@@ -250,13 +250,13 @@ export default function STBStore() {
             <span className={`nav__hamburger-line ${mobileMenu ? "open" : ""}`} />
           </button>
 
-          {/* Center brand */}
-          <button className="nav__brand-text" onClick={goHome} style={{ background: "none", border: "none", cursor: "pointer" }}>
-            Strictly Thee Best
-          </button>
-
           {/* Desktop Right */}
           <ul className="nav__links nav__links--right nav__desktop">
+            <li>
+              <button className="nav__brand-text" onClick={goHome} style={{ background: "none", border: "none", cursor: "pointer" }}>
+                Strictly Thee Best
+              </button>
+            </li>
             <li><button className="nav__link" onClick={() => { setPage("home"); setTimeout(() => scrollTo("products"), 100); }}>Shop</button></li>
             <li>
               <button className="nav__cart" onClick={() => cartQty > 0 ? setCartOpen(true) : showToast("Your bag is empty")}>
@@ -264,6 +264,11 @@ export default function STBStore() {
               </button>
             </li>
           </ul>
+
+          {/* Mobile brand */}
+          <button className="nav__brand-text nav__mobile" onClick={goHome} style={{ background: "none", border: "none", cursor: "pointer" }}>
+            Strictly Thee Best
+          </button>
 
           {/* Mobile right */}
           <button className="nav__cart nav__mobile" onClick={() => cartQty > 0 ? setCartOpen(true) : showToast("Your bag is empty")}>
