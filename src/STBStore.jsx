@@ -141,6 +141,15 @@ export default function STBStore() {
     return () => { document.body.style.overflow = ""; };
   }, [cartOpen, modal, accountOpen, mobileMenu]);
 
+  // ── Auto-rotate modal images ──
+  useEffect(() => {
+    if (!modal || modal.images.edges.length <= 1) return;
+    const interval = setInterval(() => {
+      setModalImgIdx((prev) => (prev + 1) % modal.images.edges.length);
+    }, 3500);
+    return () => clearInterval(interval);
+  }, [modal]);
+
   // ── Load products ──
   useEffect(() => {
     shopify(PRODUCTS_QUERY)
@@ -499,6 +508,12 @@ export default function STBStore() {
                       alt={modal.title}
                       className="modal__img"
                     />
+                    {modal.images.edges.length > 1 && (
+                      <>
+                        <button className="modal__arrow modal__arrow--prev" onClick={() => setModalImgIdx((prev) => (prev - 1 + modal.images.edges.length) % modal.images.edges.length)} aria-label="Previous">&#8249;</button>
+                        <button className="modal__arrow modal__arrow--next" onClick={() => setModalImgIdx((prev) => (prev + 1) % modal.images.edges.length)} aria-label="Next">&#8250;</button>
+                      </>
+                    )}
                     {modal.images.edges.length > 1 && (
                       <div className="modal__thumbnails">
                         {modal.images.edges.map(({ node: img }, i) => (
@@ -873,6 +888,16 @@ html { scroll-behavior: smooth; }
 .modal__thumbnails::-webkit-scrollbar { height: 3px; }
 .modal__thumbnails::-webkit-scrollbar-track { background: transparent; }
 .modal__thumbnails::-webkit-scrollbar-thumb { background: var(--divider); }
+.modal__arrow {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  background: rgba(8,8,8,.55); border: 1px solid rgba(242,237,229,.15);
+  color: var(--cream); font-size: 28px; line-height: 1; padding: 8px 14px;
+  cursor: pointer; z-index: 5; transition: background .2s;
+  backdrop-filter: blur(4px);
+}
+.modal__arrow:hover { background: rgba(8,8,8,.85); }
+.modal__arrow--prev { left: 12px; }
+.modal__arrow--next { right: 12px; }
 .modal__thumb { width: 52px; height: 52px; flex-shrink: 0; border: 1px solid transparent; background: #1a1a1a; cursor: pointer; padding: 0; overflow: hidden; transition: border-color .2s; }
 .modal__thumb img { width: 100%; height: 100%; object-fit: cover; }
 .modal__thumb.active { border-color: var(--gold); }
