@@ -2,6 +2,57 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import heroPhoto from "./Landing.png";
 import logoImg from "./logo.png";
 
+const cssComing = `
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  .cs{min-height:100vh;display:flex;align-items:center;justify-content:center;background:#080808;color:#F2EDE5;font-family:'Barlow Condensed',sans-serif}
+  .cs__inner{display:flex;flex-direction:column;align-items:center;text-align:center;padding:48px 32px;animation:csIn 1.2s cubic-bezier(.16,1,.3,1) both}
+  @keyframes csIn{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+  .cs__logo{height:56px;width:auto;margin-bottom:48px;opacity:.9}
+  .cs__eye{font-size:10px;font-weight:600;letter-spacing:.5em;text-transform:uppercase;color:#BFA065;margin-bottom:20px}
+  .cs__h1{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(56px,8vw,112px);line-height:.95;margin-bottom:20px}
+  .cs__sub{font-size:11px;letter-spacing:.5em;text-transform:uppercase;color:rgba(242,237,229,.35);margin-bottom:40px}
+  .cs__rule{width:48px;height:1px;background:#BFA065;opacity:.5;margin-bottom:40px}
+  .cs__copy{font-size:14px;font-weight:300;line-height:1.8;color:rgba(242,237,229,.55);margin-bottom:36px}
+  .cs__form{display:flex;width:100%;max-width:400px;border:1px solid rgba(242,237,229,.15);margin-bottom:48px}
+  .cs__input{flex:1;background:transparent;border:none;color:#F2EDE5;font-family:'Barlow Condensed',sans-serif;font-size:13px;padding:14px 18px;outline:none}
+  .cs__input::placeholder{color:rgba(242,237,229,.25)}
+  .cs__btn{background:#BFA065;color:#080808;border:none;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;padding:14px 24px;cursor:pointer;white-space:nowrap}
+  .cs__thanks{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:#BFA065;margin-bottom:48px}
+  .cs__foot{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(242,237,229,.18)}
+  @media(max-width:480px){.cs__form{flex-direction:column}.cs__btn{width:100%}}
+`;
+
+const COMING_SOON = true;
+
+function ComingSoon() {
+  const [email, setEmail] = useState("");
+  const [sent, setSent] = useState(false);
+  const submit = () => { if (!email || !email.includes("@")) return; setSent(true); setEmail(""); };
+  return (
+    <>
+      <style>{cssComing}</style>
+      <div className="cs">
+        <div className="cs__inner">
+          <img src={logoImg} alt="STB" className="cs__logo" />
+          <p className="cs__eye">Something New Is Coming</p>
+          <h1 className="cs__h1">Strictly<br />Thee Best</h1>
+          <p className="cs__sub">NYC &middot; LA &middot; For All</p>
+          <div className="cs__rule" />
+          <p className="cs__copy">The new collection drops soon.<br />Be the first to know.</p>
+          {sent ? <p className="cs__thanks">You&apos;re on the list.</p> : (
+            <div className="cs__form">
+              <input className="cs__input" type="email" placeholder="Your email address" value={email}
+                onChange={e => setEmail(e.target.value)} onKeyDown={e => e.key === "Enter" && submit()} />
+              <button className="cs__btn" onClick={submit}>Notify Me</button>
+            </div>
+          )}
+          <p className="cs__foot">&copy; {new Date().getFullYear()} Strictly Thee Best. All rights reserved.</p>
+        </div>
+      </div>
+    </>
+  );
+}
+
 // ─── Shopify Config ──────────────────────────────────────────────────────────
 const DOMAIN = "stb-4219.myshopify.com";
 const TOKEN  = "a64dd51a0b0ac5b428d9cb11c55de8cf";
@@ -102,6 +153,8 @@ function Reveal({ children, className = "", delay = 0, direction = "up" }) {
 
 // ─── Component ───────────────────────────────────────────────────────────────
 export default function STBStore() {
+  if (COMING_SOON) return <ComingSoon />;
+
   const [products, setProducts]           = useState([]);
   const [loadingProducts, setLoadingProducts] = useState(true);
   const [loadError, setLoadError]         = useState(null);
