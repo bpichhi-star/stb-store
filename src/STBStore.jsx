@@ -912,7 +912,7 @@ html { scroll-behavior: smooth; }
 .footer__legal .footer__link { margin-bottom: 0; font-size: 11px; }
 .modal-backdrop { position: fixed; inset: 0; background: rgba(8,8,8,.82); z-index: 200; display: flex; align-items: center; justify-content: center; padding: 40px; backdrop-filter: blur(6px); animation: fadeIn .3s ease; }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-.modal { background: var(--dim); max-width: 960px; width: 100%; display: grid; grid-template-columns: 1.2fr 1fr; max-height: 90vh; overflow: hidden; border: 1px solid var(--divider); position: relative; animation: slideUp .35s cubic-bezier(.16,1,.3,1); }
+.modal { background: var(--dim); max-width: 960px; width: 100%; display: grid; grid-template-columns: 1.2fr 1fr; height: 90vh; max-height: 90vh; overflow: hidden; border: 1px solid var(--divider); position: relative; animation: slideUp .35s cubic-bezier(.16,1,.3,1); }
 @keyframes slideUp { from { transform: translateY(24px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 .modal__img-col { overflow: hidden; background: #111; position: relative; }
 .modal__img-wrap { position: relative; width: 100%; aspect-ratio: 3/4; overflow: hidden; }
@@ -928,7 +928,7 @@ html { scroll-behavior: smooth; }
 .modal__arrow--prev { left: 12px; }
 .modal__arrow--next { right: 12px; }
 .modal__img-placeholder { width: 100%; height: 100%; min-height: 500px; display: flex; align-items: center; justify-content: center; font-family: 'Cormorant Garamond', serif; font-size: 72px; font-weight: 300; color: rgba(242,237,229,.08); }
-.modal__body { padding: 52px 44px; display: flex; flex-direction: column; overflow-y: auto; }
+.modal__body { padding: 52px 44px; display: flex; flex-direction: column; overflow-y: auto; min-height: 0; height: 100%; }
 .modal__close { position: absolute; top: 20px; right: 20px; background: none; border: none; color: var(--cream); font-size: 22px; cursor: pointer; opacity: .5; transition: opacity .2s; line-height: 1; padding: 4px; }
 .modal__close:hover { opacity: 1; }
 .modal__coll { font-size: 10px; font-weight: 700; letter-spacing: .45em; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; }
