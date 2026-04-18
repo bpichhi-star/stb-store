@@ -1,8 +1,61 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import heroPhoto from "./Landing.png";
 import logoImg from "./logo.png";
-const COMING_SOON = true;function ComingSoon()   const [email, setEmail] = useState("");  const [sent, setSent] = useState(false);  const submit = () =>  if (!email || !email.includes("@")) return; setSent(true); setEmail(""); ;  return (    <>      <style>`        *,*::before,*::afterbox-sizing:border-box;margin:0;padding:0        .csmin-height:100vh;display:flex;align-items:center;justify-content:center;background:#080808;color:#F2EDE5;font-family:'Barlow Condensed',sans-serif        .cs__innerdisplay:flex;flex-direction:column;align-items:center;text-align:center;padding:48px 32px;animation:csIn 1.2s cubic-bezier(.16,1,.3,1) both        @keyframes csInfromopacity:0;transform:translateY(24px)toopacity:1;transform:translateY(0)        .cs__logoheight:56px;width:auto;margin-bottom:48px;opacity:.9        .cs__eyefont-size:10px;font-weight:600;letter-spacing:.5em;text-transform:uppercase;color:#BFA065;margin-bottom:20px        .cs__h1font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(56px,8vw,112px);line-height:.95;margin-bottom:20px        .cs__subfont-size:11px;letter-spacing:.5em;text-transform:uppercase;color:rgba(242,237,229,.35);margin-bottom:40px        .cs__rulewidth:48px;height:1px;background:#BFA065;opacity:.5;margin-bottom:40px        .cs__copyfont-size:14px;font-weight:300;line-height:1.8;color:rgba(242,237,229,.55);margin-bottom:36px        .cs__formdisplay:flex;width:100%;max-width:400px;border:1px solid rgba(242,237,229,.15);margin-bottom:48px        .cs__inputflex:1;background:transparent;border:none;color:#F2EDE5;font-family:'Barlow Condensed',sans-serif;font-size:13px;padding:14px 18px;outline:none        .cs__input::placeholdercolor:rgba(242,237,229,.25)        .cs__btnbackground:#BFA065;color:#080808;border:none;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;padding:14px 24px;cursor:pointer;white-space:nowrap        .cs__thanksfont-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:#BFA065;margin-bottom:48px        .cs__footfont-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(242,237,229,.18)        @media(max-width:480px).cs__formflex-direction:column.cs__btnwidth:100%      `</style>      <div className="cs">        <div className="cs__inner">          <img src=logoImg alt="STB" className="cs__logo" />          <p className="cs__eye">Something New Is Coming</p>          <h1 className="cs__h1">Strictly<br />Thee Best</h1>          <p className="cs__sub">NYC &nbsp;Â·&nbsp; LA &nbsp;Â·&nbsp; For All</p>          <div className="cs__rule" />          <p className="cs__copy">The new collection drops soon.<br />Be the first to know.</p>          sent ? <p className="cs__thanks">You&apos;re on the list.</p> : (            <div className="cs__form">              <input className="cs__input" type="email" placeholder="Your email address" value=email                onChange=e => setEmail(e.target.value) onKeyDown=e => e.key==="Enter" && submit() />              <button className="cs__btn" onClick=submit>Notify Me</button>            </div>          )          <p className="cs__foot">&copy; new Date().getFullYear() Strictly Thee Best. All rights reserved.</p>        </div>      </div>    </>  );
-// ─── Shopify Config ──────────────────────────────────────────────────────────
+
+const cssComing = `
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  .cs{min-height:100vh;display:flex;align-items:center;justify-content:center;background:#080808;color:#F2EDE5;font-family:'Barlow Condensed',sans-serif}
+  .cs__inner{display:flex;flex-direction:column;align-items:center;text-align:center;padding:48px 32px;animation:csIn 1.2s cubic-bezier(.16,1,.3,1) both}
+  @keyframes csIn{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+  .cs__logo{height:56px;width:auto;margin-bottom:48px;opacity:.9}
+  .cs__eye{font-size:10px;font-weight:600;letter-spacing:.5em;text-transform:uppercase;color:#BFA065;margin-bottom:20px}
+  .cs__h1{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(56px,8vw,112px);line-height:.95;margin-bottom:20px}
+  .cs__sub{font-size:11px;letter-spacing:.5em;text-transform:uppercase;color:rgba(242,237,229,.35);margin-bottom:40px}
+  .cs__rule{width:48px;height:1px;background:#BFA065;opacity:.5;margin-bottom:40px}
+  .cs__copy{font-size:14px;font-weight:300;line-height:1.8;color:rgba(242,237,229,.55);margin-bottom:36px}
+  .cs__form{display:flex;width:100%;max-width:400px;border:1px solid rgba(242,237,229,.15);margin-bottom:48px}
+  .cs__input{flex:1;background:transparent;border:none;color:#F2EDE5;font-family:'Barlow Condensed',sans-serif;font-size:13px;padding:14px 18px;outline:none}
+  .cs__input::placeholder{color:rgba(242,237,229,.25)}
+  .cs__btn{background:#BFA065;color:#080808;border:none;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;padding:14px 24px;cursor:pointer;white-space:nowrap}
+  .cs__thanks{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:#BFA065;margin-bottom:48px}
+  .cs__foot{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(242,237,229,.18)}
+  @media(max-width:480px){.cs__form{flex-direction:column}.cs__btn{width:100%}}
+`;
+
+const COMING_SOON = true;
+
+function ComingSoon() {
+  const [email, setEmail] = useState("");
+  const [sent, setSent] = useState(false);
+  const submit = () => { if (!email || !email.includes("@")) return; setSent(true); setEmail(""); };
+  return (
+    <>
+      <style>{cssComing}</style>
+      <div className="cs">
+        <div className="cs__inner">
+          <img src={logoImg} alt="STB" className="cs__logo" />
+          <p className="cs__eye">Something New Is Coming</p>
+          <h1 className="cs__h1">Strictly<br />Thee Best</h1>
+          <p className="cs__sub">NYC · LA · For All</p>
+          <div className="cs__rule" />
+          <p className="cs__copy">The new collection drops soon.<br />Be the first to know.</p>
+          {sent ? <p className="cs__thanks">You&apos;re on the list.</p> : (
+            <div className="cs__form">
+              <input className="cs__input" type="email" placeholder="Your email address" value={email}
+                onChange={e => setEmail(e.target.value)} onKeyDown={e => e.key === "Enter" && submit()} />
+              <button className="cs__btn" onClick={submit}>Notify Me</button>
+            </div>
+          )}
+          <p className="cs__foot">&copy; {new Date().getFullYear()} Strictly Thee Best. All rights reserved.</p>
+        </div>
+      </div>
+    </>
+  );
+}
+
+
+
+//  Shopify Config 
 const DOMAIN = "stb-4219.myshopify.com";
 const TOKEN  = "a64dd51a0b0ac5b428d9cb11c55de8cf";
 
@@ -46,7 +99,7 @@ async function shopify(query) {
   return json.data;
 }
 
-// ─── Assets & Data ───────────────────────────────────────────────────────────
+//  Assets & Data 
 const COLLECTIONS = [
   { id: "NYC", label: "NYC Collection", sub: "Streets Never Sleep",    img: "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=900&q=85" },
   { id: "STB", label: "STB Collection", sub: "Strictly Thee Best",    img: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=900&q=85" },
@@ -65,7 +118,7 @@ const fmtLinePrice = (p) =>
     currency: p.currencyCode || "USD",
   }).format(parseFloat(p.amount || 0));
 
-// ─── Scroll Reveal Hook ──────────────────────────────────────────────────────
+//  Scroll Reveal Hook 
 function useReveal(threshold = 0.15) {
   const ref = useRef(null);
   const [visible, setVisible] = useState(false);
@@ -100,8 +153,10 @@ function Reveal({ children, className = "", delay = 0, direction = "up" }) {
   );
 }
 
-// ─── Component ───────────────────────────────────────────────────────────────
+//  Component 
 export default function STBStore() {
+  if (COMING_SOON) return <ComingSoon />;
+
   const [products, setProducts]           = useState([]);
   const [loadingProducts, setLoadingProducts] = useState(true);
   const [loadError, setLoadError]         = useState(null);
@@ -125,7 +180,7 @@ export default function STBStore() {
   const [email, setEmail]                 = useState("");
   const [emailSent, setEmailSent]         = useState(false);
 
-  // ── Scroll listeners ──
+  //  Scroll listeners 
   useEffect(() => {
     const onScroll = () => {
       setNavDark(window.scrollY > 60);
@@ -135,13 +190,13 @@ export default function STBStore() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // ── Lock body scroll when overlays are open ──
+  //  Lock body scroll when overlays are open 
   useEffect(() => {
     document.body.style.overflow = (cartOpen || modal || accountOpen || mobileMenu) ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [cartOpen, modal, accountOpen, mobileMenu]);
 
-  // ── Load products ──
+  //  Load products 
   useEffect(() => {
     shopify(PRODUCTS_QUERY)
       .then((d) => setProducts(d.products.edges.map((e) => e.node)))
@@ -179,7 +234,7 @@ export default function STBStore() {
       showToast("Added to bag");
       setCartOpen(true);
     } catch (err) {
-      showToast("Error adding to bag — try again");
+      showToast("Error adding to bag \'97 try again");
     } finally {
       setAdding(false);
     }
@@ -228,7 +283,7 @@ export default function STBStore() {
       <style>{css}</style>
       <div className="stb">
 
-        {/* ══════════════════ NAV ══════════════════ */}
+        {/*  NAV  */}
         <nav className={`nav ${navDark ? "nav--dark" : ""}`}>
           <button className="nav__hamburger" onClick={() => setMobileMenu(!mobileMenu)} aria-label="Menu">
             <span className={`nav__hamburger-line ${mobileMenu ? "open" : ""}`} />
@@ -263,12 +318,12 @@ export default function STBStore() {
           </div>
         </div>
 
-        {/* ══════════════════ HOME PAGE ══════════════════ */}
+        {/*  HOME PAGE  */}
         {page === "home" && (
           <>
-            {/* ── HERO ── */}
+            {/*  HERO  */}
             <section className="hero">
-              <img className="hero__img" src={heroPhoto} alt="STB Editorial — Strictly Thee Best streetwear" />
+              <img className="hero__img" src={heroPhoto} alt="STB Editorial \'97 Strictly Thee Best streetwear" />
               <div className="hero__veil" />
               <div className="hero__content">
                 <p className="hero__tagline">STB</p>
@@ -278,7 +333,7 @@ export default function STBStore() {
               <div className="hero__scroll-hint" aria-hidden="true"><span /></div>
             </section>
 
-            {/* ── COLLECTIONS ── */}
+            {/*  COLLECTIONS  */}
             <section className="collections" id="collections">
               <div className="collections__head">
                 <Reveal><h2 className="section-title">Collections</h2></Reveal>
@@ -311,7 +366,7 @@ export default function STBStore() {
               </div>
             </section>
 
-            {/* ── PRODUCTS ── */}
+            {/*  PRODUCTS  */}
             <section className="products" id="products">
               <div className="products__head">
                 <h2 className="section-title">{filter === "ALL" ? "All Products" : `${filter} Collection`}</h2>
@@ -360,7 +415,7 @@ export default function STBStore() {
                       <Reveal key={p.id} delay={i * 0.07}>
                         <button className="product-card" onClick={() => { setModal(p); setVariant(null); setModalImgIdx(0); }}>
                           <div className="product-card__img-wrap">
-                            {img ? <img src={img.url} alt={img.altText || p.title} loading="lazy" /> : <div className="product-card__placeholder">STB</div>}
+                            {img ? <img src={img.url} alt={img.altText || p.title} loading="eager" fetchPriority="high" /> : <div className="product-card__placeholder">STB</div>}
                             <div className="product-card__hover-label">Quick View</div>
                           </div>
                           <div className="product-card__info">
@@ -376,7 +431,7 @@ export default function STBStore() {
               )}
             </section>
 
-            {/* ── NEWSLETTER ── */}
+            {/*  NEWSLETTER  */}
             <Reveal>
               <section className="newsletter">
                 <p className="label">Stay Connected</p>
@@ -402,7 +457,7 @@ export default function STBStore() {
           </>
         )}
 
-        {/* ══════════════════ OUR STORY PAGE ══════════════════ */}
+        {/*  OUR STORY PAGE  */}
         {page === "story" && (
           <section className="story">
             <div className="story__hero">
@@ -450,12 +505,12 @@ export default function STBStore() {
           </section>
         )}
 
-        {/* ══════════════════ FOOTER ══════════════════ */}
+        {/*  FOOTER  */}
         <footer className="footer">
           <div className="footer__top">
             <div className="footer__brand">
               <button onClick={goHome} style={{ background: "none", border: "none", cursor: "pointer", padding: 0 }}>
-                <img src={logoImg} className="footer__logo-img" alt="STB — Strictly Thee Best" loading="lazy" />
+                <img src={logoImg} className="footer__logo-img" alt="STB \'97 Strictly Thee Best" loading="lazy" />
               </button>
               <p className="footer__for-all">For All</p>
             </div>
@@ -487,7 +542,7 @@ export default function STBStore() {
           </div>
         </footer>
 
-        {/* ══════════════════ PRODUCT MODAL ══════════════════ */}
+        {/*  PRODUCT MODAL  */}
         {modal && (
           <div className="modal-backdrop" onClick={(e) => e.target === e.currentTarget && setModal(null)}>
             <div className="modal" role="dialog" aria-label={modal.title}>
@@ -544,14 +599,14 @@ export default function STBStore() {
                   ))}
                 </div>
                 <button className="modal__add" disabled={!variant || adding} onClick={handleAddToCart}>
-                  {adding ? "Adding\u2026" : variant ? "Add to Bag" : "Select a Size"}
+                  {adding ? "Adding\" : variant ? "Add to Bag" : "Select a Size"}
                 </button>
               </div>
             </div>
           </div>
         )}
 
-        {/* ══════════════════ CART DRAWER ══════════════════ */}
+        {/*  CART DRAWER  */}
         {cartOpen && (
           <div className="cart-backdrop" onClick={() => setCartOpen(false)}>
             <div className="cart-drawer" onClick={(e) => e.stopPropagation()}>
@@ -585,7 +640,7 @@ export default function STBStore() {
                           disabled={removing === line.id}
                           aria-label="Remove"
                         >
-                          {removing === line.id ? "..." : "\u00d7"}
+                          {removing === line.id ? "..." : "\d7"}
                         </button>
                       </div>
                     );
@@ -610,7 +665,7 @@ export default function STBStore() {
         )}
       </div>
 
-      {/* ══════════════════ ACCOUNT MODAL ══════════════════ */}
+      {/*  ACCOUNT MODAL  */}
       {accountOpen && (
         <div className="account-overlay" onClick={() => setAccountOpen(false)}>
           <div className="account-modal" onClick={(e) => e.stopPropagation()}>
@@ -646,7 +701,7 @@ export default function STBStore() {
   );
 }
 
-// ─── Styles ──────────────────────────────────────────────────────────────────
+//  Styles 
 const css = `
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
