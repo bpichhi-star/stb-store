@@ -1,4 +1,4 @@
-undefinedimport { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import heroPhoto from "./Landing.png";
 import logoImg from "./logo.png";
 
