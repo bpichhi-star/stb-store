@@ -551,6 +551,8 @@ export default function STBStore() {
                       src={modal.images.edges[modalImgIdx]?.node.url || modal.images.edges[0].node.url}
                       alt={modal.title}
                       className="modal__img"
+                      loading="eager"
+                      fetchPriority="high"
                     />
                     {modal.images.edges.length > 1 && (
                       <>
@@ -912,9 +914,9 @@ html { scroll-behavior: smooth; }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 .modal { background: var(--dim); max-width: 960px; width: 100%; display: grid; grid-template-columns: 1.2fr 1fr; max-height: 90vh; overflow: hidden; border: 1px solid var(--divider); position: relative; animation: slideUp .35s cubic-bezier(.16,1,.3,1); }
 @keyframes slideUp { from { transform: translateY(24px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-.modal__img-col { overflow: hidden; background: #111; position: relative; display: flex; flex-direction: column; }
-.modal__img-wrap { position: relative; flex: 1; min-height: 0; overflow: hidden; }
-.modal__img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.modal__img-col { overflow: hidden; background: #111; position: relative; }
+.modal__img-wrap { position: relative; width: 100%; aspect-ratio: 3/4; overflow: hidden; }
+.modal__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
 .modal__arrow {
   position: absolute; top: 50%; transform: translateY(-50%);
   background: rgba(8,8,8,.55); border: 1px solid rgba(242,237,229,.15);
