@@ -22,7 +22,7 @@ const cssComing = `
   @media(max-width:480px){.cs__form{flex-direction:column}.cs__btn{width:100%}}
 `;
 
-const COMING_SOON = true;
+const COMING_SOON = typeof window !== "undefined" && (window.location.hostname === "www.strictlytheebest.net" || window.location.hostname === "strictlytheebest.net");
 
 function ComingSoon() {
   const [email, setEmail] = useState("");
