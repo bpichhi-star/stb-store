@@ -599,7 +599,7 @@ export default function STBStore() {
                   ))}
                 </div>
                 <button className="modal__add" disabled={!variant || adding} onClick={handleAddToCart}>
-                  {adding ? "Adding\" : variant ? "Add to Bag" : "Select a Size"}
+                  {adding ? "Adding…" : variant ? "Add to Bag" : "Select a Size"}
                 </button>
               </div>
             </div>
