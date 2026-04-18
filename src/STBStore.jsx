@@ -546,7 +546,7 @@ export default function STBStore() {
             <div className="modal" role="dialog" aria-label={modal.title}>
               <div className="modal__img-col">
                 {modal.images.edges.length > 0 ? (
-                  <>
+                  <div className="modal__img-wrap">
                     <img
                       src={modal.images.edges[modalImgIdx]?.node.url || modal.images.edges[0].node.url}
                       alt={modal.title}
@@ -558,21 +558,7 @@ export default function STBStore() {
                         <button className="modal__arrow modal__arrow--next" onClick={() => setModalImgIdx((prev) => (prev + 1) % modal.images.edges.length)} aria-label="Next">&#8250;</button>
                       </>
                     )}
-                    {modal.images.edges.length > 1 && (
-                      <div className="modal__thumbnails">
-                        {modal.images.edges.map(({ node: img }, i) => (
-                          <button
-                            key={i}
-                            className={`modal__thumb ${i === modalImgIdx ? "active" : ""}`}
-                            onClick={() => setModalImgIdx(i)}
-                            aria-label={`Image ${i + 1}`}
-                          >
-                            <img src={img.url} alt={`${modal.title} view ${i + 1}`} />
-                          </button>
-                        ))}
-                      </div>
-                    )}
-                  </>
+                  </div>
                 ) : (
                   <div className="modal__img-placeholder">STB</div>
                 )}
@@ -927,11 +913,8 @@ html { scroll-behavior: smooth; }
 .modal { background: var(--dim); max-width: 960px; width: 100%; display: grid; grid-template-columns: 1.2fr 1fr; max-height: 90vh; overflow: hidden; border: 1px solid var(--divider); position: relative; animation: slideUp .35s cubic-bezier(.16,1,.3,1); }
 @keyframes slideUp { from { transform: translateY(24px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 .modal__img-col { overflow: hidden; background: #111; position: relative; display: flex; flex-direction: column; }
-.modal__img { width: 100%; flex: 1; object-fit: cover; display: block; min-height: 0; }
-.modal__thumbnails { display: flex; gap: 6px; padding: 10px; background: rgba(8,8,8,.6); overflow-x: auto; flex-shrink: 0; }
-.modal__thumbnails::-webkit-scrollbar { height: 3px; }
-.modal__thumbnails::-webkit-scrollbar-track { background: transparent; }
-.modal__thumbnails::-webkit-scrollbar-thumb { background: var(--divider); }
+.modal__img-wrap { position: relative; flex: 1; min-height: 0; overflow: hidden; }
+.modal__img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .modal__arrow {
   position: absolute; top: 50%; transform: translateY(-50%);
   background: rgba(8,8,8,.55); border: 1px solid rgba(242,237,229,.15);
@@ -942,10 +925,6 @@ html { scroll-behavior: smooth; }
 .modal__arrow:hover { background: rgba(8,8,8,.85); }
 .modal__arrow--prev { left: 12px; }
 .modal__arrow--next { right: 12px; }
-.modal__thumb { width: 52px; height: 52px; flex-shrink: 0; border: 1px solid transparent; background: #1a1a1a; cursor: pointer; padding: 0; overflow: hidden; transition: border-color .2s; }
-.modal__thumb img { width: 100%; height: 100%; object-fit: cover; }
-.modal__thumb.active { border-color: var(--gold); }
-.modal__thumb:hover { border-color: rgba(242,237,229,.4); }
 .modal__img-placeholder { width: 100%; height: 100%; min-height: 500px; display: flex; align-items: center; justify-content: center; font-family: 'Cormorant Garamond', serif; font-size: 72px; font-weight: 300; color: rgba(242,237,229,.08); }
 .modal__body { padding: 52px 44px; display: flex; flex-direction: column; overflow-y: auto; }
 .modal__close { position: absolute; top: 20px; right: 20px; background: none; border: none; color: var(--cream); font-size: 22px; cursor: pointer; opacity: .5; transition: opacity .2s; line-height: 1; padding: 4px; }
@@ -1024,8 +1003,6 @@ html { scroll-behavior: smooth; }
   .filter-tabs { flex-wrap: wrap; }
   .modal { grid-template-columns: 1fr; max-height: 95vh; overflow-y: auto; }
   .modal__img { max-height: 45vh; }
-  .modal__thumbnails { padding: 8px; }
-  .modal__thumb { width: 44px; height: 44px; }
   .modal__body { padding: 36px 28px; }
   .cart-drawer { width: 100vw; }
   .footer { padding: 64px 24px 36px; }
