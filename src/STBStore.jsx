@@ -5,7 +5,7 @@ import logoImg from "./Gold_logo_Checkout.png";
 const cssComing = `
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
   .cs{min-height:100vh;display:flex;align-items:center;justify-content:center;background:#080808;color:#F2EDE5;font-family:'Barlow Condensed',sans-serif}
-  .cs__inner{display:flex;flex-direction:column;align-items:center;text-align:center;padding:48px 32px;animation:csIn 1.2s cubic-bezier(.16,1,.3,1) both}
+  .cs__inner{display:flex;flex- direction:column;align-items:center;text-align:center;padding:48px 32px;animation:csIn 1.2s cubic-bezier(.16,1,.3,1) both}
   @keyframes csIn{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
   .cs__logo{height:40px;width:auto;margin-bottom:48px;opacity:.9}
   .cs__eye{font-size:10px;font-weight:600;letter-spacing:.5em;text-transform:uppercase;color:#BFA065;margin-bottom:20px}
@@ -414,7 +414,7 @@ export default function STBStore() {
           </button>
           <div className="nav__right">
             <button className="nav__brand-logo" onClick={goHome} style={{ background: "none", border: "none", cursor: "pointer", padding: 0 }}>
-              <span className="nav__logo-text">STRICTLY THEE BEST</span>
+              <img src={logoImg} alt="STB" className="nav__logo-img" />
             </button>
             <button className="nav__link" onClick={() => { setPage("home"); setMobileMenu(false); setTimeout(() => scrollTo("products"), 100); }}>Shop</button>
             <button className="nav__cart" onClick={() => cartQty > 0 ? setCartOpen(true) : showToast("Your bag is empty")}>
@@ -1022,7 +1022,7 @@ html { scroll-behavior: smooth; }
 }
 .nav__link:hover { opacity: 1; }
 .nav__brand-logo { display: flex; align-items: center; }
-.nav__logo-img { height: 36px; width: auto; object-fit: contain; opacity: .9; transition: opacity .2s; }
+.nav__logo-img { height: 36px; width: auto; object-fit: contain; opacity: .9; transition: opacity .2s; mix-blend-mode: lighten; }
 .nav__logo-text { font-size: 12px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: var(--cream); opacity: .75; transition: opacity .2s; font-family: 'Barlow Condensed', sans-serif; }
 .nav__brand-logo:hover .nav__logo-img { opacity: 1; }
 .nav__brand-logo:hover .nav__logo-text { opacity: 1; }
@@ -1197,7 +1197,7 @@ html { scroll-behavior: smooth; }
 .newsletter__thanks { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 300; color: var(--gold); letter-spacing: .1em; }
 .footer { border-top: 1px solid var(--divider); padding: 88px 64px 48px; }
 .footer__top { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 64px; padding-bottom: 64px; border-bottom: 1px solid var(--divider); }
-.footer__logo-img { height: 40px; width: auto; object-fit: contain; margin-bottom: 16px; display: block; }
+.footer__logo-img { height: 64px; width: auto; object-fit: contain; margin-bottom: 16px; display: block; mix-blend-mode: lighten; }
 .footer__for-all { font-size: 11px; font-weight: 300; letter-spacing: .4em; text-transform: uppercase; color: rgba(242,237,229,.3); }
 .footer__col .label { margin-bottom: 20px; }
 .footer__link { display: block; font-size: 13px; font-weight: 300; letter-spacing: .08em; color: var(--grey); margin-bottom: 14px; cursor: pointer; background: none; border: none; text-align: left; padding: 0; font-family: 'Barlow Condensed', sans-serif; transition: color .2s; }
