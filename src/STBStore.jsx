@@ -1022,7 +1022,7 @@ html { scroll-behavior: smooth; }
 }
 .nav__link:hover { opacity: 1; }
 .nav__brand-logo { display: flex; align-items: center; }
-.nav__logo-img { height: 24px; width: auto; object-fit: contain; opacity: .9; transition: opacity .2s; }
+.nav__logo-img { height: 36px; width: auto; object-fit: contain; opacity: .9; transition: opacity .2s; }
 .nav__brand-logo:hover .nav__logo-img { opacity: 1; }
 .nav__cart {
   position: relative; font-size: 12px; font-weight: 600; letter-spacing: 0.22em;
@@ -1327,7 +1327,7 @@ html { scroll-behavior: smooth; }
 @media (max-width: 768px) {
   .nav { padding: 0 20px; }
   .nav__right { gap: 20px; }
-  .nav__logo-img { height: 26px; }
+  .nav__logo-img { height: 30px; }
   .hero { padding: 0 24px 80px; min-height: 600px; }
   .collections__head { flex-direction: column; gap: 24px; padding: 64px 32px 36px; }
   .collections__grid { grid-template-columns: 1fr; }
