@@ -924,6 +924,10 @@ export default function STBStore() {
                         Proceed to Payment →
                       </button>
                     </div>
+
+                    <button className="co-continue-shopping" onClick={() => { setCoOpen(false); setTimeout(() => scrollTo("products"), 100); }}>
+                      ← Continue Shopping
+                    </button>
                   </div>
                 )}
 
@@ -1316,6 +1320,8 @@ html { scroll-behavior: smooth; }
 .co-divider { height: 1px; background: var(--divider); margin: 20px 0; }
 .co-total { font-size: 17px !important; font-weight: 600 !important; color: var(--cream) !important; letter-spacing: .1em !important; }
 .co-payment-note { font-size: 11px; color: rgba(242,237,229,.3); letter-spacing: .08em; margin-top: 16px; font-family: 'Barlow Condensed', sans-serif; }
+.co-continue-shopping { display: block; width: 100%; background: none; border: none; color: rgba(242,237,229,.3); font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: .3em; text-transform: uppercase; cursor: pointer; margin-top: 20px; padding: 10px 0; text-align: center; transition: color .2s; }
+.co-continue-shopping:hover { color: var(--cream); }
 .co-error { font-size: 12px; color: #e05a5a; margin-top: 12px; letter-spacing: .06em; font-family: 'Barlow Condensed', sans-serif; }
 
 @media (max-width: 768px) {
