@@ -414,7 +414,7 @@ export default function STBStore() {
           </button>
           <div className="nav__right">
             <button className="nav__brand-logo" onClick={goHome} style={{ background: "none", border: "none", cursor: "pointer", padding: 0 }}>
-              <img src={logoImg} alt="STB" className="nav__logo-img" />
+              <span className="nav__logo-text">STRICTLY THEE BEST</span>
             </button>
             <button className="nav__link" onClick={() => { setPage("home"); setMobileMenu(false); setTimeout(() => scrollTo("products"), 100); }}>Shop</button>
             <button className="nav__cart" onClick={() => cartQty > 0 ? setCartOpen(true) : showToast("Your bag is empty")}>
@@ -1023,7 +1023,9 @@ html { scroll-behavior: smooth; }
 .nav__link:hover { opacity: 1; }
 .nav__brand-logo { display: flex; align-items: center; }
 .nav__logo-img { height: 36px; width: auto; object-fit: contain; opacity: .9; transition: opacity .2s; }
+.nav__logo-text { font-size: 12px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: var(--cream); opacity: .75; transition: opacity .2s; font-family: 'Barlow Condensed', sans-serif; }
 .nav__brand-logo:hover .nav__logo-img { opacity: 1; }
+.nav__brand-logo:hover .nav__logo-text { opacity: 1; }
 .nav__cart {
   position: relative; font-size: 12px; font-weight: 600; letter-spacing: 0.22em;
   text-transform: uppercase; color: var(--cream); background: none; border: none;
