@@ -82,6 +82,41 @@ const REMOVE_LINE_MUTATION = (cartId, lineId) => `mutation {
   }
 }`;
 
+const BUYER_IDENTITY_MUTATION = (cartId, email, a) => `mutation {
+  cartBuyerIdentityUpdate(cartId: "${cartId}", buyerIdentity: {
+    email: "${email}",
+    deliveryAddressPreferences: [{ deliveryAddress: {
+      firstName: "${a.f}", lastName: "${a.l}",
+      address1: "${a.a1}", address2: "${a.a2}",
+      city: "${a.city}", province: "${a.province}",
+      zip: "${a.zip}", country: "US"
+    }}]
+  }) {
+    cart {
+      id checkoutUrl
+      deliveryGroups(first: 5) {
+        edges { node {
+          id
+          deliveryOptions { handle title estimatedCost { amount currencyCode } }
+          selectedDeliveryOption { handle }
+        }}
+      }
+    }
+  }
+}`;
+
+const DELIVERY_SELECT_MUTATION = (cartId, gId, handle) => `mutation {
+  cartSelectedDeliveryOptionsUpdate(
+    cartId: "${cartId}",
+    selectedDeliveryOptions: [{ deliveryGroupId: "${gId}", deliveryOptionHandle: "${handle}" }]
+  ) {
+    cart {
+      id checkoutUrl
+      cost { totalAmount { amount currencyCode } subtotalAmount { amount currencyCode } }
+    }
+  }
+}`;
+
 async function shopify(query) {
   const res = await fetch(`https://${DOMAIN}/api/2024-01/graphql.json`, {
     method: "POST",
@@ -178,6 +213,24 @@ export default function STBStore() {
   const [email, setEmail]                 = useState("");
   const [emailSent, setEmailSent]         = useState(false);
 
+  // ── Custom checkout state ──
+  const [coOpen, setCoOpen]               = useState(false);
+  const [coStep, setCoStep]               = useState(1);
+  const [coEmail, setCoEmail]             = useState("");
+  const [coFirst, setCoFirst]             = useState("");
+  const [coLast, setCoLast]               = useState("");
+  const [coAddr1, setCoAddr1]             = useState("");
+  const [coAddr2, setCoAddr2]             = useState("");
+  const [coCity, setCoCity]               = useState("");
+  const [coProvince, setCoProvince]       = useState("");
+  const [coZip, setCoZip]                 = useState("");
+  const [coShipOpts, setCoShipOpts]       = useState([]);
+  const [coShipSel, setCoShipSel]         = useState(null);
+  const [coGrpId, setCoGrpId]             = useState("");
+  const [coCartFinal, setCoCartFinal]     = useState(null);
+  const [coLoading, setCoLoading]         = useState(false);
+  const [coError, setCoError]             = useState("");
+
   // ── Scroll listeners ──
   useEffect(() => {
     const onScroll = () => {
@@ -190,9 +243,9 @@ export default function STBStore() {
 
   // ── Lock body scroll when overlays are open ──
   useEffect(() => {
-    document.body.style.overflow = (cartOpen || modal || accountOpen || mobileMenu) ? "hidden" : "";
+    document.body.style.overflow = (cartOpen || modal || accountOpen || mobileMenu || coOpen) ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
-  }, [cartOpen, modal, accountOpen, mobileMenu]);
+  }, [cartOpen, modal, accountOpen, mobileMenu, coOpen]);
 
   // ── Load products ──
   useEffect(() => {
@@ -251,8 +304,78 @@ export default function STBStore() {
     }
   };
 
+  // ── Custom checkout handlers ──
   const openCheckout = () => {
-    if (cart?.checkoutUrl) window.open(cart.checkoutUrl, "_blank");
+    if (!cart || cartLines.length === 0) return;
+    setCartOpen(false);
+    setCoStep(1);
+    setCoError("");
+    setCoOpen(true);
+  };
+
+  const handleCoContact = () => {
+    if (!coEmail || !coEmail.includes("@")) { setCoError("Enter a valid email address."); return; }
+    setCoError("");
+    setCoStep(2);
+  };
+
+  const handleCoAddress = async () => {
+    if (!coFirst || !coLast || !coAddr1 || !coCity || !coProvince || !coZip) {
+      setCoError("Please fill in all required fields.");
+      return;
+    }
+    setCoError("");
+    setCoLoading(true);
+    try {
+      const d = await shopify(BUYER_IDENTITY_MUTATION(cart.id, coEmail, {
+        f: coFirst.replace(/"/g, "'"),
+        l: coLast.replace(/"/g, "'"),
+        a1: coAddr1.replace(/"/g, "'"),
+        a2: coAddr2.replace(/"/g, "'"),
+        city: coCity.replace(/"/g, "'"),
+        province: coProvince,
+        zip: coZip,
+      }));
+      const updatedCart = d.cartBuyerIdentityUpdate.cart;
+      const groups = updatedCart.deliveryGroups.edges;
+      if (groups.length > 0) {
+        const grp = groups[0].node;
+        setCoGrpId(grp.id);
+        setCoShipOpts(grp.deliveryOptions);
+        setCoShipSel(grp.selectedDeliveryOption?.handle || grp.deliveryOptions[0]?.handle || null);
+      } else {
+        setCoShipOpts([]);
+        setCoShipSel(null);
+      }
+      setCart(updatedCart);
+      setCoStep(3);
+    } catch (e) {
+      setCoError("Couldn't fetch shipping options. Check your address and try again.");
+    } finally {
+      setCoLoading(false);
+    }
+  };
+
+  const handleCoShipping = async () => {
+    if (!coShipSel) { setCoError("Please select a shipping method."); return; }
+    setCoError("");
+    setCoLoading(true);
+    try {
+      const d = await shopify(DELIVERY_SELECT_MUTATION(cart.id, coGrpId, coShipSel));
+      const updatedCart = d.cartSelectedDeliveryOptionsUpdate.cart;
+      setCoCartFinal(updatedCart);
+      setCart(updatedCart);
+      setCoStep(4);
+    } catch (e) {
+      setCoError("Couldn't apply shipping. Try again.");
+    } finally {
+      setCoLoading(false);
+    }
+  };
+
+  const handleCoPayment = () => {
+    const url = coCartFinal?.checkoutUrl || cart?.checkoutUrl;
+    if (url) window.location.href = url;
   };
 
   const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
@@ -275,6 +398,8 @@ export default function STBStore() {
       .catch((err) => setLoadError(err.message))
       .finally(() => setLoadingProducts(false));
   };
+
+  const coStepLabels = ["Contact", "Shipping", "Delivery", "Review"];
 
   return (
     <>
@@ -642,6 +767,171 @@ export default function STBStore() {
           </div>
         )}
 
+        {/* ══════════════════ CUSTOM CHECKOUT MODAL ══════════════════ */}
+        {coOpen && (
+          <div className="co-overlay" onClick={(e) => e.target === e.currentTarget && setCoOpen(false)}>
+            <div className="co-modal" role="dialog" aria-label="Checkout">
+
+              {/* Steps header */}
+              <div className="co-head">
+                <div className="co-steps-bar">
+                  {coStepLabels.map((s, i) => (
+                    <div key={s} className={`co-step${coStep > i + 1 ? " co-step--done" : ""}${coStep === i + 1 ? " co-step--active" : ""}`}>
+                      <span className="co-step__dot">{coStep > i + 1 ? "✓" : i + 1}</span>
+                      <span className="co-step__lbl">{s}</span>
+                    </div>
+                  ))}
+                </div>
+                <button className="modal__close" style={{ position: "static", marginLeft: 16 }} onClick={() => setCoOpen(false)} aria-label="Close">&times;</button>
+              </div>
+
+              <div className="co-body">
+
+                {/* ── Step 1: Contact ── */}
+                {coStep === 1 && (
+                  <div>
+                    <p className="modal__coll">Checkout — 1 of 4</p>
+                    <h3 className="modal__name" style={{ marginBottom: 32 }}>Contact</h3>
+                    <label className="co-lbl">Email address *</label>
+                    <input className="account-modal__input" type="email" value={coEmail}
+                      onChange={e => setCoEmail(e.target.value)}
+                      onKeyDown={e => e.key === "Enter" && handleCoContact()}
+                      placeholder="your@email.com" autoFocus />
+                    {coError && <p className="co-error">{coError}</p>}
+                    <button className="modal__add" style={{ marginTop: 32 }} onClick={handleCoContact}>
+                      Continue to Shipping →
+                    </button>
+                  </div>
+                )}
+
+                {/* ── Step 2: Shipping Address ── */}
+                {coStep === 2 && (
+                  <div>
+                    <p className="modal__coll">Checkout — 2 of 4</p>
+                    <h3 className="modal__name" style={{ marginBottom: 32 }}>Shipping Address</h3>
+                    <div className="co-row">
+                      <div>
+                        <label className="co-lbl">First name *</label>
+                        <input className="account-modal__input" value={coFirst} onChange={e => setCoFirst(e.target.value)} placeholder="First name" />
+                      </div>
+                      <div>
+                        <label className="co-lbl">Last name *</label>
+                        <input className="account-modal__input" value={coLast} onChange={e => setCoLast(e.target.value)} placeholder="Last name" />
+                      </div>
+                    </div>
+                    <label className="co-lbl">Street address *</label>
+                    <input className="account-modal__input" value={coAddr1} onChange={e => setCoAddr1(e.target.value)} placeholder="123 Main St" />
+                    <label className="co-lbl">Apt, suite, etc.</label>
+                    <input className="account-modal__input" value={coAddr2} onChange={e => setCoAddr2(e.target.value)} placeholder="Optional" />
+                    <div className="co-row">
+                      <div>
+                        <label className="co-lbl">City *</label>
+                        <input className="account-modal__input" value={coCity} onChange={e => setCoCity(e.target.value)} placeholder="City" />
+                      </div>
+                      <div>
+                        <label className="co-lbl">State *</label>
+                        <input className="account-modal__input" value={coProvince} onChange={e => setCoProvince(e.target.value)} placeholder="CA" maxLength={2} style={{ textTransform: "uppercase" }} />
+                      </div>
+                    </div>
+                    <label className="co-lbl">ZIP code *</label>
+                    <input className="account-modal__input" value={coZip} onChange={e => setCoZip(e.target.value)} placeholder="90210" style={{ maxWidth: 160 }} />
+                    {coError && <p className="co-error">{coError}</p>}
+                    <div className="co-btn-row" style={{ marginTop: 32 }}>
+                      <button className="co-back" onClick={() => { setCoStep(1); setCoError(""); }}>← Back</button>
+                      <button className="modal__add" onClick={handleCoAddress} disabled={coLoading} style={{ flex: 1 }}>
+                        {coLoading ? "Loading…" : "Continue to Delivery →"}
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {/* ── Step 3: Delivery Method ── */}
+                {coStep === 3 && (
+                  <div>
+                    <p className="modal__coll">Checkout — 3 of 4</p>
+                    <h3 className="modal__name" style={{ marginBottom: 32 }}>Delivery Method</h3>
+                    {coShipOpts.length === 0 ? (
+                      <p style={{ color: "var(--grey)", fontSize: 14, letterSpacing: ".04em" }}>No shipping options available for this address.</p>
+                    ) : (
+                      coShipOpts.map(opt => (
+                        <button key={opt.handle}
+                          className={`co-ship-opt${coShipSel === opt.handle ? " co-ship-opt--active" : ""}`}
+                          onClick={() => setCoShipSel(opt.handle)}>
+                          <div>
+                            <p className="co-ship-title">{opt.title}</p>
+                          </div>
+                          <span className="co-ship-price">
+                            {parseFloat(opt.estimatedCost.amount) === 0 ? "Free" : `$${parseFloat(opt.estimatedCost.amount).toFixed(2)}`}
+                          </span>
+                        </button>
+                      ))
+                    )}
+                    {coError && <p className="co-error">{coError}</p>}
+                    <div className="co-btn-row" style={{ marginTop: 32 }}>
+                      <button className="co-back" onClick={() => { setCoStep(2); setCoError(""); }}>← Back</button>
+                      <button className="modal__add" onClick={handleCoShipping} disabled={coLoading || !coShipSel} style={{ flex: 1 }}>
+                        {coLoading ? "Loading…" : "Continue to Review →"}
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {/* ── Step 4: Review ── */}
+                {coStep === 4 && (
+                  <div>
+                    <p className="modal__coll">Checkout — 4 of 4</p>
+                    <h3 className="modal__name" style={{ marginBottom: 32 }}>Review Order</h3>
+
+                    <div className="co-review-section">
+                      <p className="co-review-head">Items</p>
+                      {cartLines.map(line => (
+                        <div key={line.id} className="co-review-row">
+                          <span>{line.merchandise.product?.title} &mdash; {line.merchandise.title}</span>
+                          <span>{fmtLinePrice(line.merchandise.price)}</span>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="co-review-section">
+                      <p className="co-review-head">Ship to</p>
+                      <p className="co-review-addr">
+                        {coFirst} {coLast}<br />
+                        {coAddr1}{coAddr2 ? `, ${coAddr2}` : ""}<br />
+                        {coCity}, {coProvince.toUpperCase()} {coZip}
+                      </p>
+                    </div>
+
+                    <div className="co-review-section">
+                      <p className="co-review-head">Delivery</p>
+                      <div className="co-review-row">
+                        <span>{coShipOpts.find(o => o.handle === coShipSel)?.title}</span>
+                        <span>{(() => { const opt = coShipOpts.find(o => o.handle === coShipSel); return opt && parseFloat(opt.estimatedCost.amount) === 0 ? "Free" : opt ? `$${parseFloat(opt.estimatedCost.amount).toFixed(2)}` : ""; })()}</span>
+                      </div>
+                    </div>
+
+                    <div className="co-divider" />
+
+                    <div className="co-review-row co-total">
+                      <span>Total</span>
+                      <span>{coCartFinal?.cost?.totalAmount ? `$${parseFloat(coCartFinal.cost.totalAmount.amount).toFixed(2)}` : ""}</span>
+                    </div>
+
+                    <p className="co-payment-note">You'll enter payment details on the next screen.</p>
+
+                    <div className="co-btn-row" style={{ marginTop: 28 }}>
+                      <button className="co-back" onClick={() => setCoStep(3)}>← Back</button>
+                      <button className="modal__add" onClick={handleCoPayment} style={{ flex: 1 }}>
+                        Proceed to Payment →
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+              </div>
+            </div>
+          </div>
+        )}
+
         {toast && <div className="toast">{toast}</div>}
 
         {showTop && (
@@ -940,7 +1230,7 @@ html { scroll-behavior: smooth; }
 .size-btn:hover:not(.size-btn--sold) { border-color: var(--cream); }
 .size-btn--active { background: var(--cream); color: var(--black); border-color: var(--cream); }
 .size-btn--sold { opacity: .3; text-decoration: line-through; cursor: not-allowed; }
-.modal__add { margin-top: auto; padding: 17px; background: var(--cream); color: var(--black); border: none; font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .45em; text-transform: uppercase; cursor: pointer; transition: background .25s; }
+.modal__add { margin-top: auto; padding: 17px; background: var(--cream); color: var(--black); border: none; font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .45em; text-transform: uppercase; cursor: pointer; transition: background .25s; width: 100%; }
 .modal__add:hover:not(:disabled) { background: var(--gold); }
 .modal__add:disabled { opacity: .4; cursor: not-allowed; }
 .cart-backdrop { position: fixed; inset: 0; background: rgba(8,8,8,.7); z-index: 250; animation: fadeIn .25s ease; }
@@ -992,6 +1282,42 @@ html { scroll-behavior: smooth; }
 .story__subhead { font-family: 'Cormorant Garamond', serif; font-weight: 400; font-size: 28px; color: var(--cream); margin-bottom: 20px; }
 .story__text { font-size: 15px; font-weight: 300; letter-spacing: .05em; line-height: 1.85; color: var(--grey); }
 .story__cta-row { padding-top: 24px; }
+
+/* ── Custom Checkout Modal ── */
+.co-overlay { position: fixed; inset: 0; background: rgba(8,8,8,.9); z-index: 400; display: flex; align-items: center; justify-content: center; padding: 24px; backdrop-filter: blur(10px); animation: fadeIn .3s ease; }
+.co-modal { background: var(--dim); border: 1px solid var(--divider); width: 100%; max-width: 580px; max-height: 92vh; display: flex; flex-direction: column; animation: slideUp .35s cubic-bezier(.16,1,.3,1); }
+.co-head { display: flex; align-items: center; padding: 20px 28px; border-bottom: 1px solid var(--divider); gap: 12px; flex-shrink: 0; }
+.co-steps-bar { display: flex; align-items: center; flex: 1; gap: 0; }
+.co-step { display: flex; align-items: center; gap: 8px; flex: 1; position: relative; }
+.co-step:not(:last-child)::after { content: ""; position: absolute; left: 26px; top: 50%; width: calc(100% - 26px); height: 1px; background: var(--divider); z-index: 0; }
+.co-step__dot { width: 24px; height: 24px; border-radius: 50%; border: 1px solid var(--divider); font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; color: var(--grey); background: var(--dim); flex-shrink: 0; z-index: 1; font-family: 'Barlow Condensed', sans-serif; letter-spacing: 0; }
+.co-step--active .co-step__dot { border-color: var(--gold); color: var(--gold); }
+.co-step--done .co-step__dot { background: var(--gold); border-color: var(--gold); color: var(--black); }
+.co-step__lbl { font-size: 9px; font-weight: 600; letter-spacing: .3em; text-transform: uppercase; color: rgba(242,237,229,.2); white-space: nowrap; display: none; }
+.co-step--active .co-step__lbl { color: var(--gold); display: block; }
+.co-body { flex: 1; overflow-y: auto; padding: 36px 44px 44px; }
+.co-lbl { display: block; font-size: 10px; font-weight: 600; letter-spacing: .35em; text-transform: uppercase; color: var(--grey); margin-bottom: 8px; margin-top: 18px; }
+.co-lbl:first-of-type { margin-top: 0; }
+.co-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.co-row .co-lbl { margin-top: 0; }
+.co-btn-row { display: flex; gap: 12px; align-items: stretch; }
+.co-back { background: none; border: 1px solid var(--divider); color: var(--grey); font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: .25em; text-transform: uppercase; padding: 0 20px; cursor: pointer; transition: color .2s, border-color .2s; white-space: nowrap; flex-shrink: 0; }
+.co-back:hover { color: var(--cream); border-color: var(--cream); }
+.co-ship-opt { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border: 1px solid var(--divider); background: none; color: var(--cream); margin-bottom: 10px; cursor: pointer; transition: border-color .2s; text-align: left; }
+.co-ship-opt:hover { border-color: rgba(242,237,229,.3); }
+.co-ship-opt--active { border-color: var(--gold); }
+.co-ship-title { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 400; letter-spacing: .08em; color: var(--cream); }
+.co-ship-price { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 700; color: var(--gold); letter-spacing: .06em; flex-shrink: 0; margin-left: 16px; }
+.co-review-section { margin-bottom: 24px; }
+.co-review-head { font-size: 9px; font-weight: 700; letter-spacing: .45em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+.co-review-row { display: flex; justify-content: space-between; align-items: baseline; font-family: 'Barlow Condensed', sans-serif; font-size: 13px; color: var(--grey); margin-bottom: 8px; letter-spacing: .04em; gap: 16px; }
+.co-review-row span:first-child { flex: 1; }
+.co-review-addr { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; color: var(--grey); line-height: 1.8; letter-spacing: .04em; }
+.co-divider { height: 1px; background: var(--divider); margin: 20px 0; }
+.co-total { font-size: 17px !important; font-weight: 600 !important; color: var(--cream) !important; letter-spacing: .1em !important; }
+.co-payment-note { font-size: 11px; color: rgba(242,237,229,.3); letter-spacing: .08em; margin-top: 16px; font-family: 'Barlow Condensed', sans-serif; }
+.co-error { font-size: 12px; color: #e05a5a; margin-top: 12px; letter-spacing: .06em; font-family: 'Barlow Condensed', sans-serif; }
+
 @media (max-width: 768px) {
   .nav { padding: 0 20px; }
   .nav__right { gap: 20px; }
@@ -1016,6 +1342,11 @@ html { scroll-behavior: smooth; }
   .story__hero { padding: 100px 24px 60px; }
   .story__body { padding: 64px 24px 80px; }
   .back-to-top { bottom: 20px; right: 20px; width: 40px; height: 40px; }
+  .co-modal { max-height: 100vh; border-radius: 0; }
+  .co-overlay { padding: 0; align-items: flex-end; }
+  .co-body { padding: 28px 24px 36px; }
+  .co-row { grid-template-columns: 1fr; }
+  .co-step__lbl { display: none !important; }
 }
 @media (max-width: 480px) {
   .products__grid { grid-template-columns: 1fr; }
