@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import heroPhoto from "./Landing.png";
-import logoImg from "./Gold_logo_Checkout.png";
+import logoImg from "./STB_logo_transparent_TM_white.png";
 
 const cssComing = `
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
