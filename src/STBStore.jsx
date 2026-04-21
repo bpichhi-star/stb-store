@@ -380,7 +380,7 @@ export default function STBStore() {
 
   const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 
-  const goToStory = () => { setPage("story"); window.scrollTo({ top: 0 }); setMobileMenu(false); };
+  const goToStory = () => { setPage("story"); setMobileMenu(false); setTimeout(() => window.scrollTo({ top: 0 }), 0); };
   const goHome = () => { setPage("home"); window.scrollTo({ top: 0 }); setMobileMenu(false); };
 
   const handleNewsletterSubmit = () => {
