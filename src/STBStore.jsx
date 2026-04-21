@@ -696,8 +696,8 @@ export default function STBStore() {
             </div>
             <div className="footer__col">
               <p className="label">Support</p>
-              <button className="footer__link" onClick={() => showToast("Free shipping on orders over $150")}>Shipping</button>
-              <button className="footer__link" onClick={() => showToast("Returns accepted within 30 days")}>Returns</button>
+              <button className="footer__link" onClick={() => window.open("https://stb-4219.myshopify.com/policies/shipping-policy", "_blank", "noopener")}>Shipping</button>
+              <button className="footer__link" onClick={() => window.open("https://stb-4219.myshopify.com/policies/refund-policy", "_blank", "noopener")}>Returns</button>
               <button className="footer__link" onClick={() => showToast("Size guide coming soon")}>Size Guide</button>
               <button className="footer__link" onClick={() => showToast("FAQ coming soon")}>FAQ</button>
             </div>
@@ -705,8 +705,8 @@ export default function STBStore() {
           <div className="footer__bottom">
             <p className="footer__copy">&copy; {new Date().getFullYear()} Strictly Thee Best. All Rights Reserved.</p>
             <div className="footer__legal">
-              <button className="footer__link" onClick={() => showToast("Privacy Policy coming soon")}>Privacy Policy</button>
-              <button className="footer__link" onClick={() => showToast("Terms of Service coming soon")}>Terms of Service</button>
+              <button className="footer__link" onClick={() => window.open("https://stb-4219.myshopify.com/policies/privacy-policy", "_blank", "noopener")}>Privacy Policy</button>
+              <button className="footer__link" onClick={() => window.open("https://stb-4219.myshopify.com/policies/terms-of-service", "_blank", "noopener")}>Terms of Service</button>
             </div>
           </div>
         </footer>
