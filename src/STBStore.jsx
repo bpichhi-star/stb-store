@@ -214,8 +214,7 @@ export default function STBStore() {
   const [emailSent, setEmailSent]         = useState(false);
 
   // ── Custom checkout state ──
-  const [coOpen, setCoOpen]               = useState(false);
-  const [coStep, setCoStep]               = useState(1);
+  const [coOpen, setCoOpen]               = useState(false);  const [coStep, setCoStep]               = useState(1);
   const [coEmail, setCoEmail]             = useState("");
   const [coFirst, setCoFirst]             = useState("");
   const [coLast, setCoLast]               = useState("");
@@ -230,6 +229,10 @@ export default function STBStore() {
   const [coCartFinal, setCoCartFinal]     = useState(null);
   const [coLoading, setCoLoading]         = useState(false);
   const [coError, setCoError]             = useState("");
+  const [contactName, setContactName]     = useState("");
+  const [contactEmail, setContactEmail]   = useState("");
+  const [contactMsg, setContactMsg]       = useState("");
+  const [contactSent, setContactSent]     = useState(false);
 
   // ── Scroll listeners ──
   useEffect(() => {
@@ -381,6 +384,7 @@ export default function STBStore() {
   const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 
   const goToStory = () => { setPage("story"); setMobileMenu(false); setTimeout(() => window.scrollTo({ top: 0 }), 0); };
+  const goToContact = () => { setPage("contact"); setMobileMenu(false); setTimeout(() => window.scrollTo({ top: 0 }), 0); };
   const goHome = () => { setPage("home"); window.scrollTo({ top: 0 }); setMobileMenu(false); };
 
   const handleNewsletterSubmit = () => {
@@ -437,7 +441,7 @@ export default function STBStore() {
             <button onClick={() => { setAccountOpen(true); setMobileMenu(false); setAccountTab("create"); }}>Create Account</button>
             <div className="menu-panel__divider" />
             <button onClick={() => { goToStory(); }}>Our Story</button>
-            <button onClick={() => { setMobileMenu(false); showToast("Contact: hello@strictlytheebest.net"); }}>Contact Us</button>
+            <button onClick={() => { goToContact(); }}>Contact Us</button>
           </div>
         </div>
 
@@ -628,7 +632,49 @@ export default function STBStore() {
           </section>
         )}
 
-        {/* ══════════════════ FOOTER ══════════════════ */}
+        {/* ══════════════════ CONTACT PAGE ══════════════════ */}
+        {page === "contact" && (
+          <section className="story">
+            <div className="story__hero">
+              <button className="story__back" onClick={goHome}>&larr; Back</button>
+              <Reveal>
+                <p className="label">Get In Touch</p>
+                <h1 className="story__headline">Contact <em>Us</em></h1>
+              </Reveal>
+            </div>
+            <div className="story__body">
+              <Reveal>
+                {contactSent ? (
+                  <div className="story__section">
+                    <h2 className="story__subhead">Message Received</h2>
+                    <p className="story__text">Thank you for reaching out. We&apos;ll get back to you within 1&ndash;2 business days.</p>
+                    <div className="story__cta-row" style={{ paddingTop: 32 }}>
+                      <button className="hero__cta" onClick={() => { setContactSent(false); setContactName(""); setContactEmail(""); setContactMsg(""); }}>Send Another Message</button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="story__section" style={{ maxWidth: 560 }}>
+                    <label className="co-lbl">Full Name</label>
+                    <input className="account-modal__input" style={{ width: "100%", marginBottom: 0 }} type="text" placeholder="Your name" value={contactName} onChange={e => setContactName(e.target.value)} />
+                    <label className="co-lbl">Email Address</label>
+                    <input className="account-modal__input" style={{ width: "100%", marginBottom: 0 }} type="email" placeholder="your@email.com" value={contactEmail} onChange={e => setContactEmail(e.target.value)} />
+                    <label className="co-lbl">Message</label>
+                    <textarea className="account-modal__input" style={{ width: "100%", minHeight: 140, resize: "vertical", fontFamily: "inherit", marginBottom: 0 }} placeholder="How can we help you?" value={contactMsg} onChange={e => setContactMsg(e.target.value)} />
+                    <button className="hero__cta" style={{ marginTop: 28, width: "100%" }}
+                      onClick={() => {
+                        if (!contactName || !contactEmail || !contactEmail.includes("@") || !contactMsg) return;
+                        setContactSent(true);
+                      }}>
+                      Send Message
+                    </button>
+                  </div>
+                )}
+              </Reveal>
+            </div>
+          </section>
+        )}
+
+
         <footer className="footer">
           <div className="footer__top">
             <div className="footer__brand">
@@ -646,7 +692,7 @@ export default function STBStore() {
             <div className="footer__col">
               <p className="label">Company</p>
               <button className="footer__link" onClick={goToStory}>Our Story</button>
-              <button className="footer__link" onClick={() => showToast("Contact: hello@strictlytheebest.net")}>Contact</button>
+              <button className="footer__link" onClick={goToContact}>Contact</button>
             </div>
             <div className="footer__col">
               <p className="label">Support</p>
