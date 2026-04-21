@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import heroPhoto from "./Landing.png";
-import logoImg from "./STB_logo_transparent_TM_white.png";
+import logoImg from "./Gold_logo_Checkout.png";
 
 const cssComing = `
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -1022,7 +1022,7 @@ html { scroll-behavior: smooth; }
 }
 .nav__link:hover { opacity: 1; }
 .nav__brand-logo { display: flex; align-items: center; }
-.nav__logo-img { height: 13px; width: auto; object-fit: contain; opacity: .9; transition: opacity .2s; }
+.nav__logo-img { height: 36px; width: auto; object-fit: contain; opacity: .9; transition: opacity .2s; }
 .nav__logo-text { font-size: 12px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: var(--cream); opacity: .75; transition: opacity .2s; font-family: 'Barlow Condensed', sans-serif; }
 .nav__brand-logo:hover .nav__logo-img { opacity: 1; }
 .nav__brand-logo:hover .nav__logo-text { opacity: 1; }
@@ -1329,7 +1329,7 @@ html { scroll-behavior: smooth; }
 @media (max-width: 768px) {
   .nav { padding: 0 20px; }
   .nav__right { gap: 20px; }
-  .nav__logo-img { height: 13px; }
+  .nav__logo-img { height: 30px; }
   .hero { padding: 0 24px 80px; min-height: 600px; }
   .collections__head { flex-direction: column; gap: 24px; padding: 64px 32px 36px; }
   .collections__grid { grid-template-columns: 1fr; }
