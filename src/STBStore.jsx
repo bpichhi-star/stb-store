@@ -1087,7 +1087,7 @@ html { scroll-behavior: smooth; }
 @keyframes heroZoom { from { transform: scale(1.04); } to { transform: scale(1.00); } }
 .hero__veil {
   position: absolute; inset: 0;
-  background: linear-gradient(to bottom, rgba(8,8,8,.35) 0%, transparent 25%, transparent 55%, rgba(8,8,8,.75) 100%);
+  background: linear-gradient(to bottom, rgba(8,8,8,.15) 0%, transparent 25%, transparent 55%, rgba(8,8,8,.55) 100%);
 }
 .hero__content {
   position: relative; z-index: 2; display: flex; flex-direction: column;
@@ -1197,7 +1197,7 @@ html { scroll-behavior: smooth; }
 .newsletter__thanks { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 300; color: var(--gold); letter-spacing: .1em; }
 .footer { border-top: 1px solid var(--divider); padding: 88px 64px 48px; }
 .footer__top { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 64px; padding-bottom: 64px; border-bottom: 1px solid var(--divider); }
-.footer__logo-img { height: 64px; width: auto; object-fit: contain; margin-bottom: 16px; display: block; }
+.footer__logo-img { height: 20px; width: auto; object-fit: contain; margin-bottom: 16px; display: block; }
 .footer__for-all { font-size: 11px; font-weight: 300; letter-spacing: .4em; text-transform: uppercase; color: rgba(242,237,229,.3); }
 .footer__col .label { margin-bottom: 20px; }
 .footer__link { display: block; font-size: 13px; font-weight: 300; letter-spacing: .08em; color: var(--grey); margin-bottom: 14px; cursor: pointer; background: none; border: none; text-align: left; padding: 0; font-family: 'Barlow Condensed', sans-serif; transition: color .2s; }
