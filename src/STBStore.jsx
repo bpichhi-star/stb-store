@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import heroPhoto from "./Landing.png";
+import heroPhoto from "./Landing.webp";
 import logoImg from "./STB_logo_transparent_TM_white.png";
 
 const cssComing = `
@@ -203,15 +203,11 @@ export default function STBStore() {
   const [variant, setVariant]             = useState(null);
   const [adding, setAdding]               = useState(false);
   const [removing, setRemoving]           = useState(null);
-  const [accountOpen, setAccountOpen]     = useState(false);
-  const [accountTab, setAccountTab]       = useState("signin");
   const [toast, setToast]                 = useState(null);
   const [navDark, setNavDark]             = useState(false);
   const [mobileMenu, setMobileMenu]       = useState(false);
   const [page, setPage]                   = useState("home");
   const [showTop, setShowTop]             = useState(false);
-  const [email, setEmail]                 = useState("");
-  const [emailSent, setEmailSent]         = useState(false);
 
   // ── Custom checkout state ──
   const [coOpen, setCoOpen]               = useState(false);  const [coStep, setCoStep]               = useState(1);
@@ -233,6 +229,8 @@ export default function STBStore() {
   const [contactEmail, setContactEmail]   = useState("");
   const [contactMsg, setContactMsg]       = useState("");
   const [contactSent, setContactSent]     = useState(false);
+  const [contactSending, setContactSending] = useState(false);
+  const [contactError, setContactError]   = useState("");
 
   // ── Scroll listeners ──
   useEffect(() => {
@@ -246,9 +244,9 @@ export default function STBStore() {
 
   // ── Lock body scroll when overlays are open ──
   useEffect(() => {
-    document.body.style.overflow = (cartOpen || modal || accountOpen || mobileMenu || coOpen) ? "hidden" : "";
+    document.body.style.overflow = (cartOpen || modal || mobileMenu || coOpen) ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
-  }, [cartOpen, modal, accountOpen, mobileMenu, coOpen]);
+  }, [cartOpen, modal, mobileMenu, coOpen]);
 
   // ── Load products ──
   useEffect(() => {
@@ -258,7 +256,30 @@ export default function STBStore() {
       .finally(() => setLoadingProducts(false));
   }, []);
 
-  const filtered = filter === "ALL" ? products : products.filter((p) => p.tags.includes(filter));
+  // Robust tag matching: case-insensitive, whitespace-trimmed.
+  // Shopify tags are free-form strings typed by admins; one stray space or capitalization
+  // breaks `p.tags.includes("NYC")`. Normalize on both sides.
+  // TODO: migrate to Shopify Collections (stable handles) — see project notes.
+  const hasTag = (product, tag) => {
+    if (!product?.tags || !tag) return false;
+    const target = tag.trim().toLowerCase();
+    return product.tags.some((t) => t.trim().toLowerCase() === target);
+  };
+
+  // One-time dev warning for products missing a recognizable collection tag.
+  useEffect(() => {
+    if (!products.length) return;
+    const known = ["NYC", "STB", "LA"];
+    const uncategorized = products.filter((p) => !known.some((k) => hasTag(p, k)));
+    if (uncategorized.length) {
+      console.warn(
+        `[STB] ${uncategorized.length} product(s) have no NYC/STB/LA tag; they will only appear under "ALL":`,
+        uncategorized.map((p) => p.title)
+      );
+    }
+  }, [products]);
+
+  const filtered = filter === "ALL" ? products : products.filter((p) => hasTag(p, filter));
 
   const showToast = useCallback((msg) => {
     setToast(msg);
@@ -385,14 +406,42 @@ export default function STBStore() {
 
   const goToStory = () => { setPage("story"); setMobileMenu(false); setTimeout(() => window.scrollTo({ top: 0 }), 0); };
   const goToContact = () => { setPage("contact"); setMobileMenu(false); setTimeout(() => window.scrollTo({ top: 0 }), 0); };
-  const goHome = () => { setPage("home"); window.scrollTo({ top: 0 }); setMobileMenu(false); };
 
-  const handleNewsletterSubmit = () => {
-    if (!email || !email.includes("@")) return;
-    setEmailSent(true);
-    setEmail("");
-    showToast("You're on the list");
+  const submitContactForm = async () => {
+    if (contactSending) return;
+    setContactError("");
+    if (!contactName.trim() || !contactEmail.includes("@") || !contactMsg.trim()) {
+      setContactError("Please fill in all fields with a valid email.");
+      return;
+    }
+    setContactSending(true);
+    try {
+      const r = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: contactName.trim(),
+          email: contactEmail.trim(),
+          message: contactMsg.trim(),
+        }),
+      });
+      if (r.ok) {
+        setContactSent(true);
+        return;
+      }
+      // 503 = service_not_configured (env vars missing). Treat as a softer message.
+      if (r.status === 503) {
+        setContactError("Our contact form isn't fully set up yet. Please email us directly for now.");
+      } else {
+        setContactError("Something went wrong sending your message. Please try again in a moment.");
+      }
+    } catch (e) {
+      setContactError("Network error. Please check your connection and try again.");
+    } finally {
+      setContactSending(false);
+    }
   };
+  const goHome = () => { setPage("home"); window.scrollTo({ top: 0 }); setMobileMenu(false); };
 
   const retryLoad = () => {
     setLoadError(null);
@@ -437,8 +486,8 @@ export default function STBStore() {
             <button onClick={() => { setFilter("NYC"); setPage("home"); setMobileMenu(false); setTimeout(() => scrollTo("products"), 100); }}>NYC Collection</button>
             <button onClick={() => { setFilter("LA"); setPage("home"); setMobileMenu(false); setTimeout(() => scrollTo("products"), 100); }}>LA Collection</button>
             <div className="menu-panel__divider" />
-            <button onClick={() => { setAccountOpen(true); setMobileMenu(false); setAccountTab("signin"); }}>Sign In</button>
-            <button onClick={() => { setAccountOpen(true); setMobileMenu(false); setAccountTab("create"); }}>Create Account</button>
+            <button onClick={() => { window.location.href = `https://${DOMAIN}/account/login`; }}>Sign In</button>
+            <button onClick={() => { window.location.href = `https://${DOMAIN}/account/register`; }}>Create Account</button>
             <div className="menu-panel__divider" />
             <button onClick={() => { goToStory(); }}>Our Story</button>
             <button onClick={() => { goToContact(); }}>Contact Us</button>
@@ -479,7 +528,7 @@ export default function STBStore() {
                 {COLLECTIONS.map((c, i) => (
                   <Reveal key={c.id} delay={i * 0.1}>
                     <button className="coll-card" onClick={() => { setFilter(c.id); scrollTo("products"); }}>
-                      <img className="coll-card__img" src={c.img} alt={c.label} loading="eager" fetchPriority="high" />
+                      <img className="coll-card__img" src={c.img} alt={c.label} loading="lazy" />
                       <div className="coll-card__overlay" />
                       <div className="coll-card__body">
                         <p className="coll-card__tag">{c.id}</p>
@@ -537,12 +586,12 @@ export default function STBStore() {
                 <div className="products__grid">
                   {filtered.map((p, i) => {
                     const img = p.images.edges[0]?.node;
-                    const coll = COLLECTIONS.find((c) => p.tags.includes(c.id));
+                    const coll = COLLECTIONS.find((c) => hasTag(p, c.id));
                     return (
                       <Reveal key={p.id} delay={i * 0.07}>
                         <button className="product-card" onClick={() => { setModal(p); setVariant(null); setModalImgIdx(0); }}>
                           <div className="product-card__img-wrap">
-                            {img ? <img src={img.url} alt={img.altText || p.title} loading="eager" fetchPriority="high" /> : <div className="product-card__placeholder">STB</div>}
+                            {img ? <img src={img.url} alt={img.altText || p.title} loading="lazy" /> : <div className="product-card__placeholder">STB</div>}
                             <div className="product-card__hover-label">Quick View</div>
                           </div>
                           <div className="product-card__info">
@@ -558,29 +607,6 @@ export default function STBStore() {
               )}
             </section>
 
-            {/* ── NEWSLETTER ── */}
-            <Reveal>
-              <section className="newsletter">
-                <p className="label">Stay Connected</p>
-                <h2 className="section-title" style={{ marginBottom: 12 }}>Join the Movement</h2>
-                <p className="newsletter__copy">Early access to drops, exclusive offers, and the stories behind the brand.</p>
-                {emailSent ? (
-                  <p className="newsletter__thanks">Welcome to STB.</p>
-                ) : (
-                  <div className="newsletter__form">
-                    <input
-                      type="email"
-                      className="newsletter__input"
-                      placeholder="Enter your email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      onKeyDown={(e) => e.key === "Enter" && handleNewsletterSubmit()}
-                    />
-                    <button className="newsletter__btn" onClick={handleNewsletterSubmit}>Subscribe</button>
-                  </div>
-                )}
-              </section>
-            </Reveal>
           </>
         )}
 
@@ -649,23 +675,24 @@ export default function STBStore() {
                     <h2 className="story__subhead">Message Received</h2>
                     <p className="story__text">Thank you for reaching out. We&apos;ll get back to you within 1&ndash;2 business days.</p>
                     <div className="story__cta-row" style={{ paddingTop: 32 }}>
-                      <button className="hero__cta" onClick={() => { setContactSent(false); setContactName(""); setContactEmail(""); setContactMsg(""); }}>Send Another Message</button>
+                      <button className="hero__cta" onClick={() => { setContactSent(false); setContactName(""); setContactEmail(""); setContactMsg(""); setContactError(""); }}>Send Another Message</button>
                     </div>
                   </div>
                 ) : (
                   <div className="story__section" style={{ maxWidth: 560 }}>
                     <label className="co-lbl">Full Name</label>
-                    <input className="account-modal__input" style={{ width: "100%", marginBottom: 0 }} type="text" placeholder="Your name" value={contactName} onChange={e => setContactName(e.target.value)} />
+                    <input className="account-modal__input" style={{ width: "100%", marginBottom: 0 }} type="text" placeholder="Your name" value={contactName} onChange={e => setContactName(e.target.value)} disabled={contactSending} />
                     <label className="co-lbl">Email Address</label>
-                    <input className="account-modal__input" style={{ width: "100%", marginBottom: 0 }} type="email" placeholder="your@email.com" value={contactEmail} onChange={e => setContactEmail(e.target.value)} />
+                    <input className="account-modal__input" style={{ width: "100%", marginBottom: 0 }} type="email" placeholder="your@email.com" value={contactEmail} onChange={e => setContactEmail(e.target.value)} disabled={contactSending} />
                     <label className="co-lbl">Message</label>
-                    <textarea className="account-modal__input" style={{ width: "100%", minHeight: 140, resize: "vertical", fontFamily: "inherit", marginBottom: 0 }} placeholder="How can we help you?" value={contactMsg} onChange={e => setContactMsg(e.target.value)} />
-                    <button className="hero__cta" style={{ marginTop: 28, width: "100%" }}
-                      onClick={() => {
-                        if (!contactName || !contactEmail || !contactEmail.includes("@") || !contactMsg) return;
-                        setContactSent(true);
-                      }}>
-                      Send Message
+                    <textarea className="account-modal__input" style={{ width: "100%", minHeight: 140, resize: "vertical", fontFamily: "inherit", marginBottom: 0 }} placeholder="How can we help you?" value={contactMsg} onChange={e => setContactMsg(e.target.value)} disabled={contactSending} />
+                    {contactError && (
+                      <p style={{ marginTop: 16, color: "#c44", fontSize: 13, letterSpacing: ".04em" }}>{contactError}</p>
+                    )}
+                    <button className="hero__cta" style={{ marginTop: 28, width: "100%", opacity: contactSending ? 0.6 : 1, cursor: contactSending ? "wait" : "pointer" }}
+                      disabled={contactSending}
+                      onClick={submitContactForm}>
+                      {contactSending ? "Sending\u2026" : "Send Message"}
                     </button>
                   </div>
                 )}
@@ -738,7 +765,7 @@ export default function STBStore() {
               </div>
               <div className="modal__body">
                 <button className="modal__close" onClick={() => setModal(null)} aria-label="Close">&times;</button>
-                <p className="modal__coll">{COLLECTIONS.find((c) => modal.tags.includes(c.id))?.id ?? "STB"} Collection</p>
+                <p className="modal__coll">{COLLECTIONS.find((c) => hasTag(modal, c.id))?.id ?? "STB"} Collection</p>
                 <h3 className="modal__name">{modal.title}</h3>
                 <p className="modal__price">{fmtPrice(modal)}</p>
                 {modal.description && (
@@ -990,39 +1017,6 @@ export default function STBStore() {
           </button>
         )}
       </div>
-
-      {/* ══════════════════ ACCOUNT MODAL ══════════════════ */}
-      {accountOpen && (
-        <div className="account-overlay" onClick={() => setAccountOpen(false)}>
-          <div className="account-modal" onClick={(e) => e.stopPropagation()}>
-            <button className="account-modal__close" onClick={() => setAccountOpen(false)}>&times;</button>
-            <div className="account-modal__tabs">
-              <button className={"account-modal__tab" + (accountTab === "signin" ? " active" : "")} onClick={() => setAccountTab("signin")}>Sign In</button>
-              <button className={"account-modal__tab" + (accountTab === "create" ? " active" : "")} onClick={() => setAccountTab("create")}>Create Account</button>
-            </div>
-            {accountTab === "signin" && (
-              <div>
-                <p className="account-modal__sub">Welcome back</p>
-                <input className="account-modal__input" type="email" placeholder="Email address" />
-                <input className="account-modal__input" type="password" placeholder="Password" />
-                <button className="account-modal__cta" onClick={() => showToast("Account features coming soon")}>SIGN IN</button>
-                <p className="account-modal__forgot">Forgot your password?</p>
-              </div>
-            )}
-            {accountTab === "create" && (
-              <div>
-                <p className="account-modal__sub">Join STB</p>
-                <input className="account-modal__input" type="text" placeholder="First name" />
-                <input className="account-modal__input" type="text" placeholder="Last name" />
-                <input className="account-modal__input" type="email" placeholder="Email address" />
-                <input className="account-modal__input" type="password" placeholder="Password" />
-                <button className="account-modal__cta" onClick={() => showToast("Account features coming soon")}>CREATE ACCOUNT</button>
-                <p className="account-modal__forgot">Track orders &middot; Save favorites &middot; Early access</p>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
     </>
   );
 }
