@@ -1,6 +1,9 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import heroPhoto from "./Landing.webp";
 import logoImg from "./STB_logo_transparent_TM_white.png";
+import nycCollection from "./assets/collections/NYC.webp";
+import stbCollection from "./assets/collections/STB.webp";
+import laCollection from "./assets/collections/LA.webp";
 
 const cssComing = `
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -134,9 +137,9 @@ async function shopify(query) {
 
 // ─── Assets & Data ───────────────────────────────────────────────────────────
 const COLLECTIONS = [
-  { id: "NYC", label: "NYC Collection", sub: "Streets Never Sleep",    img: "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=900&q=85" },
-  { id: "STB", label: "STB Collection", sub: "Strictly Thee Best",    img: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=900&q=85" },
-  { id: "LA",  label: "LA Collection",  sub: "Golden State of Mind",  img: "https://images.unsplash.com/photo-1580655653885-65763b2597d0?w=900&q=85" },
+  { id: "NYC", label: "NYC Collection", sub: "Streets Never Sleep",    img: nycCollection },
+  { id: "STB", label: "STB Collection", sub: "Strictly Thee Best",    img: stbCollection },
+  { id: "LA",  label: "LA Collection",  sub: "Golden State of Mind",  img: laCollection  },
 ];
 
 // US states + DC. Used in the Step 2 checkout state dropdown.
