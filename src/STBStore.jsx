@@ -746,8 +746,6 @@ export default function STBStore() {
               <p className="label">Support</p>
               <button className="footer__link" onClick={() => window.open("https://stb-4219.myshopify.com/policies/shipping-policy", "_blank", "noopener")}>Shipping</button>
               <button className="footer__link" onClick={() => window.open("https://stb-4219.myshopify.com/policies/refund-policy", "_blank", "noopener")}>Returns</button>
-              <button className="footer__link" onClick={() => showToast("Size guide coming soon")}>Size Guide</button>
-              <button className="footer__link" onClick={() => showToast("FAQ coming soon")}>FAQ</button>
             </div>
           </div>
           <div className="footer__bottom">
