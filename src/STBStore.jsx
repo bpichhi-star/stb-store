@@ -139,6 +139,22 @@ const COLLECTIONS = [
   { id: "LA",  label: "LA Collection",  sub: "Golden State of Mind",  img: "https://images.unsplash.com/photo-1580655653885-65763b2597d0?w=900&q=85" },
 ];
 
+// US states + DC. Used in the Step 2 checkout state dropdown.
+// Shopify Storefront API accepts the 2-letter postal code as provinceCode.
+const US_STATES = [
+  ["AL","Alabama"],["AK","Alaska"],["AZ","Arizona"],["AR","Arkansas"],["CA","California"],
+  ["CO","Colorado"],["CT","Connecticut"],["DE","Delaware"],["DC","District of Columbia"],
+  ["FL","Florida"],["GA","Georgia"],["HI","Hawaii"],["ID","Idaho"],["IL","Illinois"],
+  ["IN","Indiana"],["IA","Iowa"],["KS","Kansas"],["KY","Kentucky"],["LA","Louisiana"],
+  ["ME","Maine"],["MD","Maryland"],["MA","Massachusetts"],["MI","Michigan"],["MN","Minnesota"],
+  ["MS","Mississippi"],["MO","Missouri"],["MT","Montana"],["NE","Nebraska"],["NV","Nevada"],
+  ["NH","New Hampshire"],["NJ","New Jersey"],["NM","New Mexico"],["NY","New York"],
+  ["NC","North Carolina"],["ND","North Dakota"],["OH","Ohio"],["OK","Oklahoma"],["OR","Oregon"],
+  ["PA","Pennsylvania"],["RI","Rhode Island"],["SC","South Carolina"],["SD","South Dakota"],
+  ["TN","Tennessee"],["TX","Texas"],["UT","Utah"],["VT","Vermont"],["VA","Virginia"],
+  ["WA","Washington"],["WV","West Virginia"],["WI","Wisconsin"],["WY","Wyoming"],
+];
+
 const fmtPrice = (p) =>
   new Intl.NumberFormat("en-US", {
     style: "currency",
@@ -835,6 +851,13 @@ export default function STBStore() {
               </div>
               {cartLines.length > 0 && (
                 <div className="cart-drawer__foot">
+                  <div className="cart-drawer__subtotal">
+                    <span className="cart-drawer__subtotal-label">Subtotal</span>
+                    <span className="cart-drawer__subtotal-value">
+                      ${cartLines.reduce((sum, l) => sum + parseFloat(l.merchandise?.price?.amount || 0) * (l.quantity || 0), 0).toFixed(2)}
+                    </span>
+                  </div>
+                  <p className="cart-drawer__note">Shipping &amp; taxes calculated at checkout.</p>
                   <button className="modal__add" onClick={openCheckout}>Checkout</button>
                 </div>
               )}
@@ -905,7 +928,17 @@ export default function STBStore() {
                       </div>
                       <div>
                         <label className="co-lbl">State *</label>
-                        <input className="account-modal__input" value={coProvince} onChange={e => setCoProvince(e.target.value)} placeholder="CA" maxLength={2} style={{ textTransform: "uppercase" }} />
+                        <select
+                          className="account-modal__input"
+                          value={coProvince}
+                          onChange={e => setCoProvince(e.target.value)}
+                          style={{ appearance: "none", cursor: "pointer" }}
+                        >
+                          <option value="">Select state</option>
+                          {US_STATES.map(([code, name]) => (
+                            <option key={code} value={code}>{name}</option>
+                          ))}
+                        </select>
                       </div>
                     </div>
                     <label className="co-lbl">ZIP code *</label>
@@ -1290,6 +1323,10 @@ html { scroll-behavior: smooth; }
 .cart-drawer__body { flex: 1; overflow-y: auto; padding: 20px 28px; }
 .cart-drawer__empty { text-align: center; padding: 60px 0; color: var(--grey); font-size: 14px; }
 .cart-drawer__foot { padding: 20px 28px 28px; border-top: 1px solid var(--divider); }
+.cart-drawer__subtotal { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 6px; }
+.cart-drawer__subtotal-label { font-family: 'Jost', sans-serif; font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: var(--grey); }
+.cart-drawer__subtotal-value { font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: 22px; color: var(--cream); }
+.cart-drawer__note { font-family: 'Jost', sans-serif; font-size: 11px; color: var(--grey); margin: 0 0 16px; letter-spacing: .04em; }
 .cart-item { display: flex; gap: 16px; padding: 16px 0; border-bottom: 1px solid var(--divider); }
 .cart-item__img { width: 72px; height: 96px; background: #111; flex-shrink: 0; overflow: hidden; }
 .cart-item__img img { width: 100%; height: 100%; object-fit: cover; }
