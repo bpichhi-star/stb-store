@@ -407,6 +407,9 @@ export default function STBStore() {
   const goToStory = () => { setPage("story"); setMobileMenu(false); setTimeout(() => window.scrollTo({ top: 0 }), 0); };
   const goToContact = () => { setPage("contact"); setMobileMenu(false); setTimeout(() => window.scrollTo({ top: 0 }), 0); };
 
+  // Contact form delivery via Web3Forms.
+  // Access key is public by design — identifies the destination, not a secret.
+  // Lands in sales@strictlytheebest.com (Neo mailbox).
   const submitContactForm = async () => {
     if (contactSending) return;
     setContactError("");
@@ -416,25 +419,24 @@ export default function STBStore() {
     }
     setContactSending(true);
     try {
-      const r = await fetch("/api/contact", {
+      const formData = new FormData();
+      formData.append("access_key", "b0de5566-0123-4c30-8390-050d74fba9c4");
+      formData.append("subject", `STB contact — ${contactName.trim()}`);
+      formData.append("from_name", "STB Contact Form");
+      formData.append("name", contactName.trim());
+      formData.append("email", contactEmail.trim());
+      formData.append("message", contactMsg.trim());
+      formData.append("botcheck", ""); // honeypot
+      const r = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: contactName.trim(),
-          email: contactEmail.trim(),
-          message: contactMsg.trim(),
-        }),
+        body: formData,
       });
-      if (r.ok) {
+      const data = await r.json().catch(() => ({}));
+      if (r.ok && data.success) {
         setContactSent(true);
         return;
       }
-      // 503 = service_not_configured (env vars missing). Treat as a softer message.
-      if (r.status === 503) {
-        setContactError("Our contact form isn't fully set up yet. Please email us directly for now.");
-      } else {
-        setContactError("Something went wrong sending your message. Please try again in a moment.");
-      }
+      setContactError(data?.message || "Something went wrong sending your message. Please try again in a moment.");
     } catch (e) {
       setContactError("Network error. Please check your connection and try again.");
     } finally {
